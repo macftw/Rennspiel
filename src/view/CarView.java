@@ -1,5 +1,9 @@
 package view;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.DoubleProperty;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
@@ -8,6 +12,7 @@ import javafx.scene.transform.Translate;
 public class CarView extends ImageView {
 
     private final String imgUrl = "resources/car.png";
+    private double imageWidth, imageHeight;
     private Rotate rotation;
     private Translate translate;
 
@@ -15,10 +20,14 @@ public class CarView extends ImageView {
         super();
         Image carImg = new Image(imgUrl);
         this.setImage(carImg);
-        rotation = new Rotate(0);
-        this.getTransforms().add(rotation);
+        imageWidth = carImg.getWidth();
+        imageHeight = carImg.getHeight();
         translate = new Translate(startX, startY);
         this.getTransforms().add(translate);
+        rotation = new Rotate(0);
+        rotation.pivotXProperty().bind(Bindings.add(imageWidth / 2, xProperty()));
+        rotation.pivotYProperty().bind(Bindings.add(imageHeight / 2, yProperty()));
+        this.getTransforms().add(rotation);
     }
 
     public void setRotation(double degrees) {
@@ -26,7 +35,7 @@ public class CarView extends ImageView {
     }
 
     public void setPosition(double x, double y) {
-        translate.setX(x);
-        translate.setY(y);
+        translate.setX(translate.getX() + x);
+        translate.setY(translate.getY() + y);
     }
 }
