@@ -35,8 +35,8 @@ public class CarView extends ImageView {
     }
 
     public void setPosition(double delta) {
-        double x = Math.cos(rotation.getAngle()) * delta;
-        double y = Math.sin(rotation.getAngle()) * delta;
+        double x = -Math.cos(rotation.getAngle() * Math.PI / 180) * delta;
+        double y = -Math.sin(rotation.getAngle() * Math.PI / 180) * delta;
         translate.setX(translate.getX() + x);
         translate.setY(translate.getY() + y);
     }

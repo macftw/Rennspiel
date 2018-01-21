@@ -49,8 +49,8 @@ public class GameModel {
         car.brake();
     }
 
-    public void getCarSpeed(){
-        car.getSpeed();
+    public double getCarSpeed(){
+        return car.getSpeed();
     }
 
 

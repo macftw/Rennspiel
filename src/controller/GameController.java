@@ -28,6 +28,7 @@ public class GameController {
      */
     public void updateContinuously(double timeDifferenceInSeconds) {
         gameView.setCarRotation(gameModel.getCarRotation());
+        gameView.setCarPosition(gameModel.getCarSpeed() * 100 * timeDifferenceInSeconds);
     }
 
     private void setUpInputHandler() {
