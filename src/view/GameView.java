@@ -66,7 +66,7 @@ public class GameView {
         this.carView.setRotation(degrees);
     }
 
-    public void setCarPosition(double x, double y) {
-        this.carView.setPosition(x, y);
+    public void setCarPosition(double delta) {
+        this.carView.setPosition(delta);
     }
 }

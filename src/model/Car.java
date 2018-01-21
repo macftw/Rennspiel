@@ -11,7 +11,7 @@ public class Car {
     final double  aerodynamicDrag = 1.204;
     final double minSpeed = 0;
     final double maxSpeed = 100;
-    final double accelaration = 1;
+    final double accelaration = 0.1;
     final double brakeSpeed = 1;
     final double rotationRadius = 0.5;
     final double maxRotation = 45;
