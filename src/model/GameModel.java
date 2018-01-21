@@ -38,6 +38,9 @@ public class GameModel {
     public void rotateRight(){
         car.rotateRight();
     }
+//    public void rotateStop(){
+//        car.stopRotation();
+//    }
     public double getCarRotation(){
         return car.getRotation();
     }
