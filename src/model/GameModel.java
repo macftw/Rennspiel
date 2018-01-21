@@ -1,5 +1,7 @@
 package model;
 
+import controller.GameController;
+
 /**
  * The GameModel saves data about the game, including the racecar.
  * It handles most of the calculations for the racegame.
@@ -29,4 +31,16 @@ public class GameModel {
         car = new Car();
         return car;
     }
+
+    public void rotateLeft(){
+        car.rotateLeft();
+    }
+    public void rotateRight(){
+        car.rotateRight();
+    }
+    public double getCarRotation(){
+        return car.getRotation();
+    }
+
+
 }

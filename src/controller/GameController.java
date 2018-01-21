@@ -4,6 +4,8 @@ import javafx.scene.Scene;
 import model.*;
 import view.GameView;
 
+import java.awt.event.KeyEvent;
+
 public class GameController {
 
     private GameModel gameModel;
@@ -32,5 +34,21 @@ public class GameController {
          * Useful actions:
          * setOnKeyPressed, setOnKeyReleased
          */
+
+    }
+
+    public void setOnKeyPressed(KeyEvent e){
+        int keyCode = e.getKeyCode();
+        switch ( keyCode ) {
+            case KeyEvent.VK_UP:
+            case KeyEvent.VK_DOWN:
+            case KeyEvent.VK_LEFT:
+                gameModel.rotateLeft();
+            case KeyEvent.VK_RIGHT:
+                gameModel.rotateRight();
+        }
+    }
+    public void setOnKeyReleased(){
+        /*TODO*/
     }
 }
