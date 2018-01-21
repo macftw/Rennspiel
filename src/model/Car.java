@@ -11,6 +11,8 @@ public class Car {
     final double  aerodynamicDrag = 1.204;
     final double minSpeed = 0;
     final double maxSpeed = 100;
+    final double accelaration = 1;
+    final double brakeSpeed = 1;
     final double rotationRadius = 0.5;
     final double maxRotation = 45;
 
@@ -43,7 +45,14 @@ public class Car {
         if (rotation < maxRotation)
             rotation += rotationRadius;
     }
-//    public void stopRotation(){
-//        rotation = 0;
-//    }
+
+    public void accelerate(){
+        if (speed < maxSpeed)
+            speed += accelaration;
+    }
+    public void brake(){
+        if (speed > 0)
+            speed -= brakeSpeed;
+
+    }
 }

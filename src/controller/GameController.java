@@ -47,8 +47,10 @@ public class GameController {
         KeyCode keyCode = e.getCode();
         switch ( keyCode ) {
             case UP:
+                gameModel.accelarate();
                 break;
             case DOWN:
+                gameModel.brake();
                 break;
             case LEFT:
                 gameModel.rotateLeft();
