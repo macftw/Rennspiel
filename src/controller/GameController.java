@@ -1,10 +1,11 @@
 package controller;
 
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import model.*;
 import view.GameView;
-
-import java.awt.event.KeyEvent;
 
 public class GameController {
 
@@ -26,7 +27,7 @@ public class GameController {
      * @param timeDifferenceInSeconds the time passed since last frame
      */
     public void updateContinuously(double timeDifferenceInSeconds) {
-
+        gameView.setCarRotation(gameModel.getCarRotation());
     }
 
     private void setUpInputHandler() {
@@ -34,17 +35,22 @@ public class GameController {
          * Useful actions:
          * setOnKeyPressed, setOnKeyReleased
          */
-
+        gameView.getScene().addEventHandler(javafx.scene.input.KeyEvent.KEY_PRESSED, new EventHandler<javafx.scene.input.KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                setOnKeyPressed(event);
+            }
+        });
     }
 
     public void setOnKeyPressed(KeyEvent e){
-        int keyCode = e.getKeyCode();
+        KeyCode keyCode = e.getCode();
         switch ( keyCode ) {
-            case KeyEvent.VK_UP:
-            case KeyEvent.VK_DOWN:
-            case KeyEvent.VK_LEFT:
+            case UP:
+            case DOWN:
+            case LEFT:
                 gameModel.rotateLeft();
-            case KeyEvent.VK_RIGHT:
+            case RIGHT:
                 gameModel.rotateRight();
         }
     }
