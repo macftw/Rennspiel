@@ -1,9 +1,9 @@
 package view;
 
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 /**
@@ -16,6 +16,7 @@ public class GameView {
 
     //Stackpane, where all dialogs are stacked
     private StackPane rootPane;
+    private CarView carView;
 
     private Pane gamePane;
     public Scene getScene() {
@@ -48,10 +49,17 @@ public class GameView {
      */
     private void setUpGameWindow() {
         gamePane = new Pane();
-        Text text = new Text("Rennspiel");
-        text.setLayoutX(100);
-        text.setLayoutY(100);
-        gamePane.getChildren().add(text);
+
+        Image raceTrackImg = new Image("resources/race-track.png");
+        BackgroundImage bg = new BackgroundImage(raceTrackImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+        carView = new CarView();
+
+        gamePane.setBackground(new Background(bg));
+        gamePane.getChildren().add(carView);
         rootPane.getChildren().add(gamePane);
+    }
+
+    public void setCarRotation(double degrees) {
+        this.carView.setRotation(degrees);
     }
 }
