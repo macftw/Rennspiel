@@ -12,6 +12,7 @@ public class Car {
     final double minSpeed = 0;
     final double maxSpeed = 100;
     final double rotationRadius = 0.5;
+    final double maxRotation = 45;
 
     private double rotation;
 
@@ -33,10 +34,16 @@ public class Car {
     }
 
     public void rotateLeft(){
-        rotation -= rotationRadius;
+        if (rotation > (-maxRotation))
+            rotation -= rotationRadius;
+
     }
 
     public void rotateRight(){
-        rotation += rotationRadius;
+        if (rotation < maxRotation)
+            rotation += rotationRadius;
     }
+//    public void stopRotation(){
+//        rotation = 0;
+//    }
 }

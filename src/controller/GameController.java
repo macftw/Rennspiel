@@ -47,14 +47,18 @@ public class GameController {
         KeyCode keyCode = e.getCode();
         switch ( keyCode ) {
             case UP:
+                break;
             case DOWN:
+                break;
             case LEFT:
                 gameModel.rotateLeft();
+                break;
             case RIGHT:
                 gameModel.rotateRight();
+                break;
         }
     }
-    public void setOnKeyReleased(){
-        /*TODO*/
+    public void setOnKeyReleased(KeyEvent e){
+
     }
 }
