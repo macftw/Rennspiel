@@ -11,6 +11,9 @@ import javafx.stage.Stage;
  */
 public class GameView {
 
+    private final double carStartX = 660;
+    private final double carStartY = 91;
+
     //The scene where all is stacked up
     private Scene scene;
 
@@ -52,7 +55,7 @@ public class GameView {
 
         Image raceTrackImg = new Image("resources/race-track.png");
         BackgroundImage bg = new BackgroundImage(raceTrackImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-        carView = new CarView();
+        carView = new CarView(carStartX, carStartY);
 
         gamePane.setBackground(new Background(bg));
         gamePane.getChildren().add(carView);
@@ -61,5 +64,9 @@ public class GameView {
 
     public void setCarRotation(double degrees) {
         this.carView.setRotation(degrees);
+    }
+
+    public void setCarPosition(double x, double y) {
+        this.carView.setPosition(x, y);
     }
 }

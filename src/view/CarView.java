@@ -8,18 +8,25 @@ import javafx.scene.transform.Translate;
 public class CarView extends ImageView {
 
     private final String imgUrl = "resources/car.png";
+    private Rotate rotation;
+    private Translate translate;
 
-    public CarView() {
+    public CarView(double startX, double startY) {
         super();
         Image carImg = new Image(imgUrl);
         this.setImage(carImg);
+        rotation = new Rotate(0);
+        this.getTransforms().add(rotation);
+        translate = new Translate(startX, startY);
+        this.getTransforms().add(translate);
     }
 
     public void setRotation(double degrees) {
-        this.getTransforms().add(new Rotate(degrees));
+        rotation.setAngle(degrees);
     }
 
     public void setPosition(double x, double y) {
-        this.getTransforms().add(new Translate(x, y));
+        translate.setX(x);
+        translate.setY(y);
     }
 }
