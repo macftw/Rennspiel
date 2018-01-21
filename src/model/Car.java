@@ -17,11 +17,10 @@ public class Car {
     final double maxRotation = 45;
 
     private double rotation;
-
     private int positionX;
     private int positionY;
+    private double speed;
 
-    public double speed;
     public boolean writeOff;
 
     public Car() {
@@ -54,5 +53,9 @@ public class Car {
         if (speed > 0)
             speed -= brakeSpeed;
 
+    }
+
+    public double getSpeed(){
+        return speed;
     }
 }

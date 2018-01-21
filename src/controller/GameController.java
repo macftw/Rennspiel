@@ -47,7 +47,7 @@ public class GameController {
         KeyCode keyCode = e.getCode();
         switch ( keyCode ) {
             case UP:
-                gameModel.accelarate();
+                gameModel.accelerate();
                 break;
             case DOWN:
                 gameModel.brake();
@@ -61,6 +61,6 @@ public class GameController {
         }
     }
     public void setOnKeyReleased(KeyEvent e){
-
+        /*TODO*/
     }
 }

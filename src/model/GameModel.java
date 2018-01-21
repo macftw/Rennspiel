@@ -42,11 +42,15 @@ public class GameModel {
         return car.getRotation();
     }
 
-    public void accelarate(){
+    public void accelerate(){
         car.accelerate();
     }
     public void brake(){
         car.brake();
+    }
+
+    public void getCarSpeed(){
+        car.getSpeed();
     }
 
 
