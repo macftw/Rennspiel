@@ -1,5 +1,7 @@
 package model;
 
+import com.sun.javafx.geom.Point2D;
+
 /**
  * Class car represents the race-car in the race game.
  */
@@ -17,7 +19,9 @@ public class Car {
 
     private double rotation;
     private double speed;
+    private Point2D position;
 
+    public boolean isOnTrack;
     public boolean writeOff;
 
     public enum AccelerationStatus {
@@ -32,14 +36,15 @@ public class Car {
     public RotationStatus rotationStatus;
 
     public Car() {
-
+        isOnTrack = true;
         rotation = 0;
         speed = 0;
         accelerationStatus = AccelerationStatus.NONE;
         rotationStatus = RotationStatus.NONE;
     }
 
-    public void updateValues() {
+    public void updateValues(Point2D position) {
+        this.position = position;
         switch (accelerationStatus) {
             case ACCELERATING:
                 accelerate();
@@ -89,5 +94,9 @@ public class Car {
 
     public double getRotation() {
         return rotation;
+    }
+
+    public Point2D getPosition() {
+        return position;
     }
 }

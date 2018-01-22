@@ -1,8 +1,8 @@
 package view;
 
+import com.sun.javafx.geom.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -66,7 +66,7 @@ public class GameView {
         this.carView.setRotation(degrees);
     }
 
-    public void setCarPosition(double delta) {
-        this.carView.setPosition(delta);
+    public Point2D setCarPosition(double delta) {
+        return this.carView.setPosition(delta);
     }
 }

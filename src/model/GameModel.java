@@ -1,5 +1,7 @@
 package model;
 
+import com.sun.javafx.geom.Ellipse2D;
+import com.sun.javafx.geom.Point2D;
 import controller.GameController;
 
 /**
@@ -13,12 +15,15 @@ public class GameModel {
      */
     private Car car;
 
+    private Ellipse2D raceTrackInner, raceTrackOuter;
     /**
      * Creates a gameModel, that handles most of the actions
      */
     public GameModel() {
         //initialize Car, default data in GameView
         car = initializeCar();
+        raceTrackInner = new Ellipse2D(200, 150, 900, 500);
+        raceTrackOuter = new Ellipse2D(100, 50, 1100, 700);
     }
 
     /**
@@ -32,8 +37,12 @@ public class GameModel {
         return car;
     }
 
-    public void updateCar() {
-        car.updateValues();
+    public void updateCar(Point2D newPos) {
+        car.updateValues(newPos);
+        boolean _temp = car.isOnTrack;
+        car.isOnTrack = raceTrackOuter.contains(car.getPosition()) && !raceTrackInner.contains(car.getPosition());
+        if (_temp != car.isOnTrack)
+            System.out.println("Car on track: " + car.isOnTrack);
     }
 
     public void rotateLeft(boolean release){
@@ -57,6 +66,5 @@ public class GameModel {
     public double getCarSpeed(){
         return car.getSpeed();
     }
-
 
 }

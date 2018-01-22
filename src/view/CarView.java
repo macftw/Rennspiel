@@ -1,9 +1,7 @@
 package view;
 
+import com.sun.javafx.geom.Point2D;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.DoubleProperty;
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
@@ -34,10 +32,11 @@ public class CarView extends ImageView {
         rotation.setAngle(degrees);
     }
 
-    public void setPosition(double delta) {
+    public Point2D setPosition(double delta) {
         double x = -Math.cos(rotation.getAngle() * Math.PI / 180) * delta;
         double y = -Math.sin(rotation.getAngle() * Math.PI / 180) * delta;
         translate.setX(translate.getX() + x);
         translate.setY(translate.getY() + y);
+        return new Point2D((float)translate.getX(), (float)translate.getY());
     }
 }
