@@ -37,8 +37,8 @@ public class GameModel {
         return car;
     }
 
-    public void updateCar(Point2D newPos) {
-        car.updateValues(newPos);
+    public void updateCar(Point2D newPos, double timeDifference) {
+        car.updateValues(newPos, timeDifference);
         boolean _temp = car.isOnTrack;
         car.isOnTrack = raceTrackOuter.contains(car.getPosition()) && !raceTrackInner.contains(car.getPosition());
         if (_temp != car.isOnTrack)

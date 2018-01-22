@@ -23,9 +23,6 @@ public class Car {
     private double rotation;
     private double speed;
     private Point2D position;
-    private double accRes;
-    private double cR;
-    private double timeDifference;
 
 
     public boolean isOnTrack;
@@ -50,7 +47,7 @@ public class Car {
         rotationStatus = RotationStatus.NONE;
     }
 
-    public void updateValues(Point2D position) {
+    public void updateValues(Point2D position, double timeDifference) {
         this.position = position;
         switch (accelerationStatus) {
             case ACCELERATING:
@@ -60,7 +57,7 @@ public class Car {
                 brake();
                 break;
         }
-        physics();
+        physics(timeDifference);
 
         switch (rotationStatus) {
             case LEFT:
@@ -72,8 +69,12 @@ public class Car {
         }
     }
 
-    private void physics() {
-       speed += accelaration + ((cR *g) + ((airDragCoefficient * frontalArea * 0.5 *aerodynamicDrag * speed * speed))/weight)*timeDifference;
+    private void physics(double timeDifference) {
+        double cR = isOnTrack ? c1 : c2;
+        double aMotor = accelerationStatus == AccelerationStatus.ACCELERATING ? 1 : 0;
+        speed -= aMotor -(((cR *g) + (airDragCoefficient * frontalArea * 0.5 *aerodynamicDrag * speed * speed))/weight)*timeDifference;
+        if (speed < 0)
+            speed = 0;
     }
 
     private void rotateLeft(){

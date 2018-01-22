@@ -26,7 +26,7 @@ public class GameController {
      * @param timeDifferenceInSeconds the time passed since last frame
      */
     public void updateContinuously(double timeDifferenceInSeconds) {
-        gameModel.updateCar(gameView.setCarPosition(gameModel.getCarSpeed() * timeDifferenceInSeconds));
+        gameModel.updateCar(gameView.setCarPosition(gameModel.getCarSpeed() * timeDifferenceInSeconds), timeDifferenceInSeconds);
         gameView.setCarRotation(gameModel.getCarRotation());
     }
 
