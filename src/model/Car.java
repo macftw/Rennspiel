@@ -14,9 +14,16 @@ public class Car {
     final double accelaration = 1;
     final double brakeSpeed = 1;
     final double rotationRadius = 1;
+    final double g = 9.81;
+    final double c1 = 0.015;
+    final double c2 = 0.05;
 
     private double rotation;
     private double speed;
+    private double accRes;
+    private double cR;
+    private double timeDifference;
+
 
     public boolean writeOff;
 
@@ -61,7 +68,7 @@ public class Car {
     }
 
     private void physics() {
-
+       speed += accelaration + ((cR *g) + ((airDragCoefficient * frontalArea * 0.5 *aerodynamicDrag * speed * speed))/weight)*timeDifference;
     }
 
     private void rotateLeft(){
