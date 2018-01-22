@@ -10,49 +10,84 @@ public class Car {
     final double airDragCoefficient = 0.28;
     final double  aerodynamicDrag = 1.204;
     final double minSpeed = 0;
-    final double maxSpeed = 100;
-    final double accelaration = 0.1;
-    final double brakeSpeed = 0.1;
-    final double rotationRadius = 5;
+    final double maxSpeed = 200;
+    final double accelaration = 1;
+    final double brakeSpeed = 1;
+    final double rotationRadius = 1;
 
     private double rotation;
-    private int positionX;
-    private int positionY;
     private double speed;
 
     public boolean writeOff;
+
+    public enum AccelerationStatus {
+        ACCELERATING, NONE, BRAKING
+    }
+
+    public enum RotationStatus {
+        LEFT, NONE, RIGHT
+    }
+
+    public AccelerationStatus accelerationStatus;
+    public RotationStatus rotationStatus;
 
     public Car() {
 
         rotation = 0;
         speed = 0;
+        accelerationStatus = AccelerationStatus.NONE;
+        rotationStatus = RotationStatus.NONE;
+    }
+
+    public void updateValues() {
+        switch (accelerationStatus) {
+            case ACCELERATING:
+                accelerate();
+                break;
+            case BRAKING:
+                brake();
+                break;
+        }
+        physics();
+
+        switch (rotationStatus) {
+            case LEFT:
+                rotateLeft();
+                break;
+            case RIGHT:
+                rotateRight();
+                break;
+        }
+    }
+
+    private void physics() {
 
     }
 
-    public double getRotation() {
-        return rotation;
-    }
-
-    public void rotateLeft(){
+    private void rotateLeft(){
         rotation -= rotationRadius;
 
     }
 
-    public void rotateRight(){
+    private void rotateRight(){
         rotation += rotationRadius;
     }
 
-    public void accelerate(){
+    private void accelerate(){
         if (speed < maxSpeed)
             speed += accelaration;
     }
-    public void brake(){
-        if (speed > 0)
-            speed -= brakeSpeed;
-
+    private void brake(){
+        speed -= brakeSpeed;
+        if (speed < 0)
+            speed = 0;
     }
 
     public double getSpeed(){
         return speed;
+    }
+
+    public double getRotation() {
+        return rotation;
     }
 }

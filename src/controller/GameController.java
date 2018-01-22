@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -27,8 +26,9 @@ public class GameController {
      * @param timeDifferenceInSeconds the time passed since last frame
      */
     public void updateContinuously(double timeDifferenceInSeconds) {
+        gameModel.updateCar();
         gameView.setCarRotation(gameModel.getCarRotation());
-        gameView.setCarPosition(gameModel.getCarSpeed() * 100 * timeDifferenceInSeconds);
+        gameView.setCarPosition(gameModel.getCarSpeed() * timeDifferenceInSeconds);
     }
 
     private void setUpInputHandler() {
@@ -36,32 +36,43 @@ public class GameController {
          * Useful actions:
          * setOnKeyPressed, setOnKeyReleased
          */
-        gameView.getScene().addEventHandler(javafx.scene.input.KeyEvent.KEY_PRESSED, new EventHandler<javafx.scene.input.KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                setOnKeyPressed(event);
-            }
-        });
+        this.scene.addEventHandler(KeyEvent.KEY_PRESSED, this::setOnKeyPressed);
+
+        this.scene.addEventHandler(KeyEvent.KEY_RELEASED, this::setOnKeyReleased);
     }
 
-    public void setOnKeyPressed(KeyEvent e){
+    private void setOnKeyPressed(KeyEvent e){
         KeyCode keyCode = e.getCode();
         switch ( keyCode ) {
             case UP:
-                gameModel.accelerate();
+                gameModel.accelerate(false);
                 break;
             case DOWN:
-                gameModel.brake();
+                gameModel.brake(false);
                 break;
             case LEFT:
-                gameModel.rotateLeft();
+                gameModel.rotateLeft(false);
                 break;
             case RIGHT:
-                gameModel.rotateRight();
+                gameModel.rotateRight(false);
                 break;
         }
     }
-    public void setOnKeyReleased(KeyEvent e){
-        /*TODO*/
+    private void setOnKeyReleased(KeyEvent e){
+        KeyCode keyCode = e.getCode();
+        switch ( keyCode ) {
+            case UP:
+                gameModel.accelerate(true);
+                break;
+            case DOWN:
+                gameModel.brake(true);
+                break;
+            case LEFT:
+                gameModel.rotateLeft(true);
+                break;
+            case RIGHT:
+                gameModel.rotateRight(true);
+                break;
+        }
     }
 }

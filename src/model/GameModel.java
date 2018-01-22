@@ -32,21 +32,26 @@ public class GameModel {
         return car;
     }
 
-    public void rotateLeft(){
-        car.rotateLeft();
+    public void updateCar() {
+        car.updateValues();
     }
-    public void rotateRight(){
-        car.rotateRight();
+
+    public void rotateLeft(boolean release){
+        car.rotationStatus = release ? Car.RotationStatus.NONE : Car.RotationStatus.LEFT;
+    }
+    public void rotateRight(boolean release){
+        car.rotationStatus = release ? Car.RotationStatus.NONE : Car.RotationStatus.RIGHT;
     }
     public double getCarRotation(){
         return car.getRotation();
     }
 
-    public void accelerate(){
-        car.accelerate();
+    public void accelerate(boolean release){
+        car.accelerationStatus = release ? Car.AccelerationStatus.NONE : Car.AccelerationStatus.ACCELERATING;
     }
-    public void brake(){
-        car.brake();
+
+    public void brake(boolean release){
+        car.accelerationStatus = release ? Car.AccelerationStatus.NONE : Car.AccelerationStatus.BRAKING;
     }
 
     public double getCarSpeed(){
