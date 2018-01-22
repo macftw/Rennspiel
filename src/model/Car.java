@@ -13,7 +13,8 @@ public class Car {
     final double  aerodynamicDrag = 1.204;
     final double minSpeed = 0;
     final double maxSpeed = 200;
-    final double accelaration = 1;
+    final double maxAcceleration = 3;
+
     final double brakeSpeed = 1;
     final double rotationRadius = 1;
     final double g = 9.81;
@@ -22,6 +23,7 @@ public class Car {
 
     private double rotation;
     private double speed;
+    private double acceleration;
     private Point2D position;
 
 
@@ -43,6 +45,7 @@ public class Car {
         isOnTrack = true;
         rotation = 0;
         speed = 0;
+        acceleration = 0;
         accelerationStatus = AccelerationStatus.NONE;
         rotationStatus = RotationStatus.NONE;
     }
@@ -51,13 +54,17 @@ public class Car {
         this.position = position;
         switch (accelerationStatus) {
             case ACCELERATING:
-                accelerate();
+                acceleration = maxAcceleration;
                 break;
             case BRAKING:
-                brake();
+                acceleration = -maxAcceleration;
+                break;
+            case NONE:
+                acceleration = 0;
                 break;
         }
         physics(timeDifference);
+        updateSpeed();
 
         switch (rotationStatus) {
             case LEFT:
@@ -71,10 +78,14 @@ public class Car {
 
     private void physics(double timeDifference) {
         double cR = isOnTrack ? c1 : c2;
-        double aMotor = accelerationStatus == AccelerationStatus.ACCELERATING ? 1 : 0;
-        speed -= aMotor -(((cR *g) + (airDragCoefficient * frontalArea * 0.5 *aerodynamicDrag * speed * speed))/weight)*timeDifference;
-        if (speed < 0)
-            speed = 0;
+//        double aMotor = accelerationStatus == AccelerationStatus.ACCELERATING ? 1 : 0;
+//        speed -= aMotor -(((cR *g) + (airDragCoefficient * frontalArea * 0.5 *aerodynamicDrag * speed * speed))/weight)*timeDifference;
+
+
+        double Fcar = weight * acceleration;
+        double Fair = (airDragCoefficient * frontalArea * 0.5 * aerodynamicDrag * speed * speed);
+        double Fr = weight * g * cR;
+        acceleration = (Fcar - Fr - Fair) / weight;
     }
 
     private void rotateLeft(){
@@ -86,14 +97,12 @@ public class Car {
         rotation += rotationRadius;
     }
 
-    private void accelerate(){
-        if (speed < maxSpeed)
-            speed += accelaration;
-    }
-    private void brake(){
-        speed -= brakeSpeed;
+    private void updateSpeed(){
+        speed += acceleration;
         if (speed < 0)
             speed = 0;
+        if (speed > maxSpeed)
+            speed = maxSpeed;
     }
 
     public double getSpeed(){

@@ -39,10 +39,7 @@ public class GameModel {
 
     public void updateCar(Point2D newPos, double timeDifference) {
         car.updateValues(newPos, timeDifference);
-        boolean _temp = car.isOnTrack;
         car.isOnTrack = raceTrackOuter.contains(car.getPosition()) && !raceTrackInner.contains(car.getPosition());
-        if (_temp != car.isOnTrack)
-            System.out.println("Car on track: " + car.isOnTrack);
     }
 
     public void rotateLeft(boolean release){
