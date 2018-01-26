@@ -88,7 +88,7 @@ public class GameView {
 
     public void checkForCollision() {
         for (int i = 0; i < obstacles.length; i++) {
-            Bounds bounds = obstacles[i].getBoundsInLocal();
+            Bounds bounds = obstacles[i].getBoundsInParent();
             if (bounds.intersects(carView.getBoundsInParent())) {
                 obstacles[i].setFill(Paint.valueOf("FF0000"));
                 System.out.println("CRASH");
