@@ -18,6 +18,7 @@ public class GameController {
         this.scene = gameView.getScene();
         //Set up keylistener
         setUpInputHandler();
+        gameView.drawObstacles(gameModel.getObstacles());
     }
 
     /**
@@ -28,6 +29,7 @@ public class GameController {
     public void updateContinuously(double timeDifferenceInSeconds) {
         gameModel.updateCar(gameView.setCarPosition(gameModel.getCarSpeed() * timeDifferenceInSeconds), timeDifferenceInSeconds);
         gameView.setCarRotation(gameModel.getCarRotation());
+        gameView.checkForCollision();
     }
 
     private void setUpInputHandler() {

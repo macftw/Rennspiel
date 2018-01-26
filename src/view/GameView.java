@@ -1,10 +1,15 @@
 package view;
 
-import com.sun.javafx.geom.Point2D;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
+import model.Obstacle;
 
 /**
  * Contains every GUI element
@@ -20,6 +25,7 @@ public class GameView {
     //Stackpane, where all dialogs are stacked
     private StackPane rootPane;
     private CarView carView;
+    private Rectangle[] obstacles;
 
     private Pane gamePane;
     public Scene getScene() {
@@ -62,11 +68,32 @@ public class GameView {
         rootPane.getChildren().add(gamePane);
     }
 
+    public void drawObstacles(Obstacle[] obstacles) {
+        this.obstacles = new Rectangle[obstacles.length];
+        for (int i = 0; i < obstacles.length; i++) {
+            Rectangle rect = new Rectangle(obstacles[i].getX(), obstacles[i].getY(), obstacles[i].getWidth(), obstacles[i].getHeight());
+            rect.setFill(Paint.valueOf("#FFFF00"));
+            this.obstacles[i] = rect;
+            gamePane.getChildren().add(rect);
+        }
+    }
+
     public void setCarRotation(double degrees) {
         this.carView.setRotation(degrees);
     }
 
     public Point2D setCarPosition(double delta) {
         return this.carView.setPosition(delta);
+    }
+
+    public void checkForCollision() {
+        for (int i = 0; i < obstacles.length; i++) {
+            Bounds bounds = obstacles[i].getBoundsInLocal();
+            if (bounds.intersects(carView.getBoundsInParent())) {
+                obstacles[i].setFill(Paint.valueOf("FF0000"));
+                System.out.println("CRASH");
+                break;
+            }
+        }
     }
 }

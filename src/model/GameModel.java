@@ -1,20 +1,19 @@
 package model;
 
 import com.sun.javafx.geom.Ellipse2D;
-import com.sun.javafx.geom.Point2D;
-import controller.GameController;
+import javafx.geometry.Point2D;
 
 /**
  * The GameModel saves data about the game, including the racecar.
  * It handles most of the calculations for the racegame.
  */
 public class GameModel {
-
+    final int NUM_OCSTACLES = 15;
     /**
      * The car that is driven on the racetrack
      */
     private Car car;
-
+    private Obstacle[] obstacles;
     private Ellipse2D raceTrackInner, raceTrackOuter;
     /**
      * Creates a gameModel, that handles most of the actions
@@ -24,6 +23,7 @@ public class GameModel {
         car = initializeCar();
         raceTrackInner = new Ellipse2D(200, 150, 900, 500);
         raceTrackOuter = new Ellipse2D(100, 50, 1100, 700);
+        generateObstacles();
     }
 
     /**
@@ -39,7 +39,9 @@ public class GameModel {
 
     public void updateCar(Point2D newPos, double timeDifference) {
         car.updateValues(newPos, timeDifference);
-        car.isOnTrack = raceTrackOuter.contains(car.getPosition()) && !raceTrackInner.contains(car.getPosition());
+        car.isOnTrack = raceTrackOuter.contains((float)car.getPosition().getX(), (float)car.getPosition().getY())
+                && !raceTrackInner.contains((float)car.getPosition().getX(), (float)car.getPosition().getY());
+//        car.isOnTrack = raceTrackOuter.contains(car.getPosition()) && !raceTrackInner.contains(car.getPosition());
     }
 
     public void rotateLeft(boolean release){
@@ -64,4 +66,17 @@ public class GameModel {
         return car.getSpeed();
     }
 
+    /**
+     *
+     */
+    private void generateObstacles() {
+        obstacles = new Obstacle[NUM_OCSTACLES];
+        for (int i = 0; i < NUM_OCSTACLES; i++) {
+            obstacles[i] = new Obstacle(50, 1250, 50, 750);
+        }
+    }
+
+    public Obstacle[] getObstacles() {
+        return obstacles;
+    }
 }
