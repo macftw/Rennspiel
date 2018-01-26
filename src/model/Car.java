@@ -1,6 +1,7 @@
 package model;
 
-import com.sun.javafx.geom.Point2D;
+
+import javafx.geometry.Point2D;
 
 /**
  * Class car represents the race-car in the race game.

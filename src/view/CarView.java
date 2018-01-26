@@ -1,7 +1,8 @@
 package view;
 
-import com.sun.javafx.geom.Point2D;
+//import com.sun.javafx.geom.Point2D;
 import javafx.beans.binding.Bindings;
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
@@ -38,5 +39,9 @@ public class CarView extends ImageView {
         translate.setX(translate.getX() + x);
         translate.setY(translate.getY() + y);
         return new Point2D((float)translate.getX(), (float)translate.getY());
+    }
+
+    public Point2D getPosition() {
+        return new Point2D(translate.getX(), translate.getY());
     }
 }
