@@ -1,5 +1,7 @@
 package view;
 
+import events.RaceEvent;
+import javafx.event.*;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
@@ -7,27 +9,38 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
 import model.Obstacle;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Contains every GUI element
  */
-public class GameView {
+public class GameView implements EventTarget {
 
+    private final double SCREEN_WIDTH = 1300;
+    private final double SCREEN_HEIGHT = 800;
     private final double carStartX = 660;
     private final double carStartY = 91;
 
     //The scene where all is stacked up
     private Scene scene;
 
+    // event handlers
+    private final Map<EventType, Collection<EventHandler>> handlers = new HashMap<>();
+
     //Stackpane, where all dialogs are stacked
     private StackPane rootPane;
     private CarView carView;
     private Rectangle[] obstacles;
+    private MenuView menu;
 
     private Pane gamePane;
+
     public Scene getScene() {
         return scene;
     }
@@ -45,7 +58,7 @@ public class GameView {
         stage.sizeToScene();
 
         rootPane = new StackPane();
-        scene = new Scene(rootPane, 1300, 800);
+        scene = new Scene(rootPane, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         setUpGameWindow();
 
@@ -66,6 +79,23 @@ public class GameView {
         gamePane.setBackground(new Background(bg));
         gamePane.getChildren().add(carView);
         rootPane.getChildren().add(gamePane);
+    }
+
+    public boolean toggleMenu(String title) {
+        if (menu != null) {
+            System.out.println("Hide menu");
+            gamePane.getChildren().remove(menu);
+            menu = null;
+            return false;
+        } else {
+            System.out.println("Show menu");
+            menu = new MenuView(SCREEN_WIDTH, SCREEN_HEIGHT, title);
+            menu.addEventHandler(ActionEvent.ACTION, event -> {
+                fireEvent(new RaceEvent(RaceEvent.START));
+            });
+            gamePane.getChildren().add(menu);
+            return true;
+        }
     }
 
     public void drawObstacles(Obstacle[] obstacles) {
@@ -91,9 +121,48 @@ public class GameView {
             Bounds bounds = obstacles[i].getBoundsInParent();
             if (bounds.intersects(carView.getBoundsInParent())) {
                 obstacles[i].setFill(Paint.valueOf("FF0000"));
-                System.out.println("CRASH");
+                fireEvent(new RaceEvent(RaceEvent.CRASH));
                 break;
             }
         }
     }
+
+    public final <T extends Event> void addEventHandler(EventType<T> eventType, EventHandler<? super T> eventHandler) {
+        handlers.computeIfAbsent(eventType, (k) -> new ArrayList<>())
+                .add(eventHandler);
+    }
+
+    public final <T extends Event> void removeEventHandler(EventType<T> eventType, EventHandler<? super T> eventHandler) {
+        handlers.computeIfPresent(eventType, (k, v) -> {
+            v.remove(eventHandler);
+            return v.isEmpty() ? null : v;
+        });
+    }
+
+    @Override
+    public final EventDispatchChain buildEventDispatchChain(EventDispatchChain tail) {
+        return tail.prepend(this::dispatchEvent);
+    }
+
+    private void handleEvent(Event event, Collection<EventHandler> handlers) {
+        if (handlers != null) {
+            handlers.forEach(handler -> handler.handle(event));
+        }
+    }
+
+    private Event dispatchEvent(Event event, EventDispatchChain tail) {
+        // go through type hierarchy and trigger all handlers
+        EventType type = event.getEventType();
+        while (type != Event.ANY) {
+            handleEvent(event, handlers.get(type));
+            type = type.getSuperType();
+        }
+        handleEvent(event, handlers.get(Event.ANY));
+        return event;
+    }
+
+    public void fireEvent(Event event) {
+        Event.fireEvent(this, event);
+    }
 }
+

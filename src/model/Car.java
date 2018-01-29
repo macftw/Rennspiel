@@ -13,8 +13,8 @@ public class Car {
     final double airDragCoefficient = 0.28;
     final double  aerodynamicDrag = 1.204;
     final double minSpeed = 0;
-    final double maxSpeed = 200;
-    final double maxAcceleration = 3;
+    final double maxSpeed = 400;
+    final double maxAcceleration = 4;
 
     final double brakeSpeed = 1;
     final double rotationRadius = 1;

@@ -15,6 +15,8 @@ public class GameModel {
     private Car car;
     private Obstacle[] obstacles;
     private Ellipse2D raceTrackInner, raceTrackOuter;
+
+    public boolean gamePaused;
     /**
      * Creates a gameModel, that handles most of the actions
      */
