@@ -5,6 +5,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import model.*;
 import view.GameView;
+import events.RaceEvent;
 
 public class GameController {
 
@@ -21,6 +22,13 @@ public class GameController {
         gameView.drawObstacles(gameModel.getObstacles());
         gameView.drawStartingLine();
         gameView.drawCheckpoint();
+        gameView.addEventHandler(RaceEvent.START,event -> {
+            gameModel.gamePaused = gameView.toggleMenu("Pause");
+        });
+        gameView.addEventHandler(RaceEvent.CRASH,event -> {
+            gameModel.gamePaused = gameView.toggleMenu("Game over!");
+        });
+        gameModel.gamePaused = gameView.toggleMenu("Rennspiel");
     }
 
     /**
@@ -29,6 +37,8 @@ public class GameController {
      * @param timeDifferenceInSeconds the time passed since last frame
      */
     public void updateContinuously(double timeDifferenceInSeconds) {
+        if (gameModel.gamePaused)
+            return;
         gameModel.updateCar(gameView.setCarPosition(gameModel.getCarSpeed() * timeDifferenceInSeconds), timeDifferenceInSeconds);
         gameView.setCarRotation(gameModel.getCarRotation());
         gameView.checkForCollision();
@@ -58,6 +68,9 @@ public class GameController {
                 break;
             case RIGHT:
                 gameModel.rotateRight(false);
+                break;
+            case P:
+                gameModel.gamePaused = gameView.toggleMenu("Pause");
                 break;
         }
     }

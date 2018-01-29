@@ -15,6 +15,8 @@ public class Car {
     final double minSpeed = 0;
     final double maxSpeed = 200;
     final double maxAcceleration = 5;
+    final double maxSpeed = 400;
+    final double maxAcceleration = 4;
 
     final double brakeSpeed = 1;
     final double rotationRadius = 1;
