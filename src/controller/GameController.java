@@ -19,6 +19,8 @@ public class GameController {
         //Set up keylistener
         setUpInputHandler();
         gameView.drawObstacles(gameModel.getObstacles());
+        gameView.drawStartingLine();
+        gameView.drawCheckpoint();
     }
 
     /**

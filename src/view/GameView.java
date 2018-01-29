@@ -10,6 +10,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
 import model.Obstacle;
+import org.w3c.dom.css.Rect;
 
 /**
  * Contains every GUI element
@@ -78,6 +79,18 @@ public class GameView {
         }
     }
 
+    public void drawStartingLine(){
+        Rectangle line = new Rectangle(650, 50, 5, 100);
+        line.setFill(Paint.valueOf("FFFF00"));
+        gamePane.getChildren().add(line);
+    }
+
+    public void drawCheckpoint() {
+        Rectangle checkpoint = new Rectangle(650, 650, 5, 100);
+        checkpoint.setFill(Paint.valueOf("#FFFF00"));
+        gamePane.getChildren().add(checkpoint);
+    }
+
     public void setCarRotation(double degrees) {
         this.carView.setRotation(degrees);
     }
@@ -96,4 +109,5 @@ public class GameView {
             }
         }
     }
+
 }
