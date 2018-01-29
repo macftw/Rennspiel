@@ -18,15 +18,21 @@ public class GameController {
         this.gameModel = gameModel;
         this.scene = gameView.getScene();
         //Set up keylistener
-        setUpInputHandler();
+
         gameView.drawObstacles(gameModel.getObstacles());
-        gameView.drawStartingLine();
-        gameView.drawCheckpoint();
+
         gameView.addEventHandler(RaceEvent.START,event -> {
             gameModel.gamePaused = gameView.toggleMenu("Pause");
+            setUpInputHandler();
         });
         gameView.addEventHandler(RaceEvent.CRASH,event -> {
             gameModel.gamePaused = gameView.toggleMenu("Game over!");
+        });
+        gameView.addEventHandler(RaceEvent.CHECKPOINT,event -> {
+            gameModel.checkpointPassed = true;
+        });
+        gameView.addEventHandler(RaceEvent.FINISH,event -> {
+            gameModel.gamePaused = gameView.toggleMenu("Congrats! You won!");
         });
         gameModel.gamePaused = gameView.toggleMenu("Rennspiel");
     }
@@ -41,7 +47,7 @@ public class GameController {
             return;
         gameModel.updateCar(gameView.setCarPosition(gameModel.getCarSpeed() * timeDifferenceInSeconds), timeDifferenceInSeconds);
         gameView.setCarRotation(gameModel.getCarRotation());
-        gameView.checkForCollision();
+        gameView.checkForCollision(gameModel.checkpointPassed);
     }
 
     private void setUpInputHandler() {

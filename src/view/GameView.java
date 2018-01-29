@@ -7,6 +7,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -39,7 +40,7 @@ public class GameView implements EventTarget {
     private CarView carView;
     private Rectangle[] obstacles;
     private MenuView menu;
-
+    private Rectangle startingLine, checkpoint;
     private Pane gamePane;
 
     public Scene getScene() {
@@ -75,6 +76,10 @@ public class GameView implements EventTarget {
 
         Image raceTrackImg = new Image("resources/race-track.png");
         BackgroundImage bg = new BackgroundImage(raceTrackImg, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+
+        drawStartingLine();
+        drawCheckpoint();
+
         carView = new CarView(carStartX, carStartY);
 
         gamePane.setBackground(new Background(bg));
@@ -110,14 +115,14 @@ public class GameView implements EventTarget {
     }
 
     public void drawStartingLine(){
-        Rectangle line = new Rectangle(650, 50, 5, 100);
-        line.setFill(Paint.valueOf("FFFF00"));
-        gamePane.getChildren().add(line);
+        startingLine = new Rectangle(650, 50, 5, 100);
+        startingLine.setFill(Paint.valueOf("FF00FF"));
+        gamePane.getChildren().add(startingLine);
     }
 
     public void drawCheckpoint() {
-        Rectangle checkpoint = new Rectangle(650, 650, 5, 100);
-        checkpoint.setFill(Paint.valueOf("#FFFF00"));
+        checkpoint = new Rectangle(650, 650, 5, 100);
+        checkpoint.setFill(Paint.valueOf("#FF00FF"));
         gamePane.getChildren().add(checkpoint);
     }
 
@@ -129,7 +134,7 @@ public class GameView implements EventTarget {
         return this.carView.setPosition(delta);
     }
 
-    public void checkForCollision() {
+    public void checkForCollision(boolean checkpointPassed) {
         for (int i = 0; i < obstacles.length; i++) {
             Bounds bounds = obstacles[i].getBoundsInParent();
             if (bounds.intersects(carView.getBoundsInParent())) {
@@ -138,19 +143,22 @@ public class GameView implements EventTarget {
                 break;
             }
         }
+        Bounds checkpointBounds = checkpoint.getBoundsInParent();
+        if (checkpointBounds.intersects(carView.getBoundsInParent())) {
+            checkpoint.setFill(Color.BLUEVIOLET);
+            fireEvent(new RaceEvent(RaceEvent.CHECKPOINT));
+        }
+        Bounds startingLineBounds = startingLine.getBoundsInParent();
+        if (checkpointPassed && startingLineBounds.intersects(carView.getBoundsInParent())) {
+            startingLine.setFill(Color.BLUEVIOLET);
+            fireEvent(new RaceEvent(RaceEvent.FINISH));
+        }
     }
 
     public final <T extends Event> void addEventHandler(EventType<T> eventType, EventHandler<? super T> eventHandler) {
-        handlers.computeIfAbsent(eventType, (k) -> new ArrayList<>())
-                .add(eventHandler);
+        handlers.computeIfAbsent(eventType, (k) -> new ArrayList<>()).add(eventHandler);
     }
 
-    public final <T extends Event> void removeEventHandler(EventType<T> eventType, EventHandler<? super T> eventHandler) {
-        handlers.computeIfPresent(eventType, (k, v) -> {
-            v.remove(eventHandler);
-            return v.isEmpty() ? null : v;
-        });
-    }
 
     @Override
     public final EventDispatchChain buildEventDispatchChain(EventDispatchChain tail) {
