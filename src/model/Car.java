@@ -13,14 +13,14 @@ public class Car {
     final double airDragCoefficient = 0.28;
     final double  aerodynamicDrag = 1.204;
     final double minSpeed = 0;
-    final double maxSpeed = 400;
-    final double maxAcceleration = 4;
+    final double maxSpeed = 200;
+    final double maxAcceleration = 5;
 
     final double brakeSpeed = 1;
     final double rotationRadius = 1;
     final double g = 9.81;
     final double c1 = 0.015;
-    final double c2 = 0.05;
+    final double c2 = 0.25;
 
     private double rotation;
     private double speed;
@@ -66,6 +66,8 @@ public class Car {
         }
         physics(timeDifference);
         updateSpeed();
+        if (speed == 0)
+            return;
 
         switch (rotationStatus) {
             case LEFT:

@@ -16,6 +16,7 @@ public class GameModel {
     private Obstacle[] obstacles;
     private Ellipse2D raceTrackInner, raceTrackOuter;
 
+    public boolean checkpointPassed;
     public boolean gamePaused;
     /**
      * Creates a gameModel, that handles most of the actions
@@ -26,6 +27,7 @@ public class GameModel {
         raceTrackInner = new Ellipse2D(200, 150, 900, 500);
         raceTrackOuter = new Ellipse2D(100, 50, 1100, 700);
         generateObstacles();
+        checkpointPassed = false;
     }
 
     /**
