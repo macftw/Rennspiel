@@ -7,8 +7,11 @@ import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Obstacle;
 
@@ -38,6 +41,7 @@ public class GameView implements EventTarget {
     private CarView carView;
     private Rectangle[] obstacles;
     private MenuView menu;
+    private Text fpsLabel;
 
     private Pane gamePane;
 
@@ -78,6 +82,11 @@ public class GameView implements EventTarget {
 
         gamePane.setBackground(new Background(bg));
         gamePane.getChildren().add(carView);
+
+        fpsLabel = new Text(1200, 30,"0 FPS");
+        fpsLabel.setFont(new Font(20));
+        fpsLabel.setFill(Color.YELLOW);
+        gamePane.getChildren().add(fpsLabel);
         rootPane.getChildren().add(gamePane);
     }
 
@@ -117,6 +126,7 @@ public class GameView implements EventTarget {
     }
 
     public void checkForCollision() {
+
         for (int i = 0; i < obstacles.length; i++) {
             Bounds bounds = obstacles[i].getBoundsInParent();
             if (bounds.intersects(carView.getBoundsInParent())) {
@@ -125,6 +135,10 @@ public class GameView implements EventTarget {
                 break;
             }
         }
+    }
+
+    public void updateFpsLabel(int fps) {
+        fpsLabel.setText(fps + " FPS");
     }
 
     public final <T extends Event> void addEventHandler(EventType<T> eventType, EventHandler<? super T> eventHandler) {

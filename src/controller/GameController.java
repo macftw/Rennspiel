@@ -35,6 +35,7 @@ public class GameController {
      * @param timeDifferenceInSeconds the time passed since last frame
      */
     public void updateContinuously(double timeDifferenceInSeconds) {
+        gameView.updateFpsLabel((int)(1 / timeDifferenceInSeconds));
         if (gameModel.gamePaused)
             return;
         gameModel.updateCar(gameView.setCarPosition(gameModel.getCarSpeed() * timeDifferenceInSeconds), timeDifferenceInSeconds);
