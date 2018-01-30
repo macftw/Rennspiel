@@ -119,7 +119,7 @@ public class GameView implements EventTarget {
     }
 
     public void drawObstacles(Obstacle[] obstacles) {
-        Rectangle upperSafeArea = new Rectangle(620, 50, 60, 100);
+        Rectangle upperSafeArea = new Rectangle(620, 50, 90, 100);
         Rectangle lowerSafeArea = new Rectangle(620, 650, 60, 100);
         upperSafeArea.setFill(Color.TRANSPARENT);
         lowerSafeArea.setFill(Color.TRANSPARENT);

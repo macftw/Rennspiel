@@ -8,7 +8,7 @@ import javafx.geometry.Point2D;
  * It handles most of the calculations for the racegame.
  */
 public class GameModel {
-    final int NUM_OBSTACLES = 15;
+    final int NUM_OBSTACLES = 1000;
     /**
      * The car that is driven on the racetrack
      */
