@@ -45,6 +45,7 @@ public class GameView implements EventTarget {
     private Rectangle startingLine, checkpoint;
     private Pane gamePane;
     private double time;
+    private Rectangle tl, tr, bl, br;
 
     public Scene getScene() {
         return scene;
@@ -157,17 +158,26 @@ public class GameView implements EventTarget {
     }
 
     public Point2D setCarPosition(double delta) {
-        return this.carView.setPosition(delta);
+        Point2D p =  this.carView.setPosition(delta);
+        return p;
     }
 
     public void checkForCollision(boolean checkpointPassed) {
         for (int i = 0; i < obstacles.length; i++) {
             Bounds bounds = obstacles[i].getBoundsInParent();
-            if (obstacles[i].getParent() != null && bounds.intersects(carView.getBoundsInParent())) {
+            if (bounds.contains(carView.getTopLeft())
+                    || bounds.contains(carView.getTopRight())
+                    || bounds.contains(carView.getBottomLeft())
+                    || bounds.contains(carView.getBottomRight())) {
                 obstacles[i].setFill(Paint.valueOf("FF0000"));
                 fireEvent(new RaceEvent(RaceEvent.CRASH));
                 break;
             }
+//            if (bounds.intersects(carView.getBoundsInParent())) {
+//                obstacles[i].setFill(Paint.valueOf("FF0000"));
+//                fireEvent(new RaceEvent(RaceEvent.CRASH));
+//                break;
+//            }
         }
         Bounds checkpointBounds = checkpoint.getBoundsInParent();
         if (checkpointBounds.intersects(carView.getBoundsInParent())) {
