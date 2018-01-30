@@ -119,4 +119,8 @@ public class Car {
     public Point2D getPosition() {
         return position;
     }
+
+    public void hitObstacle() {
+        speed = 0;
+    }
 }

@@ -8,7 +8,7 @@ import javafx.geometry.Point2D;
  * It handles most of the calculations for the racegame.
  */
 public class GameModel {
-    final int NUM_OBSTACLES = 1000;
+    final int NUM_OBSTACLES = 100;
     /**
      * The car that is driven on the racetrack
      */
@@ -68,6 +68,10 @@ public class GameModel {
         car.accelerationStatus = release ? Car.AccelerationStatus.NONE : Car.AccelerationStatus.BRAKING;
     }
 
+    public void hitObstacle() {
+        car.hitObstacle();
+    }
+
     public double getCarSpeed(){
         return car.getSpeed();
     }
@@ -84,5 +88,14 @@ public class GameModel {
 
     public Obstacle[] getObstacles() {
         return obstacles;
+    }
+
+    public void reset() {
+        car = initializeCar();
+        raceTrackInner = new Ellipse2D(200, 150, 900, 500);
+        raceTrackOuter = new Ellipse2D(100, 50, 1100, 700);
+        generateObstacles();
+        checkpointPassed = false;
+        startingLinePassed = false;
     }
 }

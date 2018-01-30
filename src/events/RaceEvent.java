@@ -10,6 +10,7 @@ public class RaceEvent extends Event {
     public static final EventType<RaceEvent> CHECKPOINT = new EventType(ANY, "CHECKPOINT");
     public static final EventType<RaceEvent> STARTINGLINE = new EventType(ANY, "STARTINGLINE");
     public static final EventType<RaceEvent> FINISH = new EventType(ANY, "FINISH");
+    public static final EventType<RaceEvent> OBSTACLE = new EventType(ANY, "OBSTACLE");
 
     public RaceEvent(EventType<RaceEvent> type) {
         super(type);

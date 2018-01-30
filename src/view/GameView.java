@@ -25,6 +25,7 @@ import java.util.Map;
  */
 public class GameView implements EventTarget {
 
+    private final double CRASH_SPEED = 100;
     private final double SCREEN_WIDTH = 1300;
     private final double SCREEN_HEIGHT = 800;
     private final double carStartX = 660;
@@ -45,7 +46,6 @@ public class GameView implements EventTarget {
     private Rectangle startingLine, checkpoint;
     private Pane gamePane;
     private double time;
-    private Rectangle tl, tr, bl, br;
 
     public Scene getScene() {
         return scene;
@@ -162,23 +162,26 @@ public class GameView implements EventTarget {
         return p;
     }
 
-    public void checkForCollision(boolean checkpointPassed) {
+    public void checkForCollision(double carSpeed) {
         for (int i = 0; i < obstacles.length; i++) {
+            if (obstacles[i].getParent() == null)
+                continue;
             Bounds bounds = obstacles[i].getBoundsInParent();
             if (bounds.contains(carView.getTopLeft())
-                    || bounds.contains(carView.getTopRight())
-                    || bounds.contains(carView.getBottomLeft())
-                    || bounds.contains(carView.getBottomRight())) {
+//                    || bounds.contains(carView.getTopRight())
+                    || bounds.contains(carView.getBottomLeft())) {
+//                    || bounds.contains(carView.getBottomRight())) {
                 obstacles[i].setFill(Paint.valueOf("FF0000"));
-                fireEvent(new RaceEvent(RaceEvent.CRASH));
+                if (carSpeed > CRASH_SPEED)
+                    fireEvent(new RaceEvent(RaceEvent.CRASH));
+                else
+                    fireEvent(new RaceEvent(RaceEvent.OBSTACLE));
                 break;
             }
-//            if (bounds.intersects(carView.getBoundsInParent())) {
-//                obstacles[i].setFill(Paint.valueOf("FF0000"));
-//                fireEvent(new RaceEvent(RaceEvent.CRASH));
-//                break;
-//            }
         }
+    }
+
+    public void checkLines(boolean checkpointPassed) {
         Bounds checkpointBounds = checkpoint.getBoundsInParent();
         if (checkpointBounds.intersects(carView.getBoundsInParent())) {
             checkpoint.setFill(Color.BLUEVIOLET);
@@ -242,5 +245,15 @@ public class GameView implements EventTarget {
 
     public void fireEvent(Event event) {
         Event.fireEvent(this, event);
+    }
+
+    public void reset() {
+        menu = null;
+        gamePane.getChildren().clear();
+        rootPane.getChildren().clear();
+        obstacles = null;
+        gamePane = null;
+
+        setUpGameWindow();
     }
 }
