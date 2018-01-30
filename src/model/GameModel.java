@@ -8,7 +8,7 @@ import javafx.geometry.Point2D;
  * It handles most of the calculations for the racegame.
  */
 public class GameModel {
-    final int NUM_OCSTACLES = 15;
+    final int NUM_OBSTACLES = 15;
     /**
      * The car that is driven on the racetrack
      */
@@ -17,6 +17,7 @@ public class GameModel {
     private Ellipse2D raceTrackInner, raceTrackOuter;
 
     public boolean checkpointPassed;
+    public boolean startingLinePassed;
     public boolean gamePaused;
     /**
      * Creates a gameModel, that handles most of the actions
@@ -28,6 +29,7 @@ public class GameModel {
         raceTrackOuter = new Ellipse2D(100, 50, 1100, 700);
         generateObstacles();
         checkpointPassed = false;
+        startingLinePassed = false;
     }
 
     /**
@@ -74,8 +76,8 @@ public class GameModel {
      *
      */
     private void generateObstacles() {
-        obstacles = new Obstacle[NUM_OCSTACLES];
-        for (int i = 0; i < NUM_OCSTACLES; i++) {
+        obstacles = new Obstacle[NUM_OBSTACLES];
+        for (int i = 0; i < NUM_OBSTACLES; i++) {
             obstacles[i] = new Obstacle(50, 1250, 50, 750);
         }
     }

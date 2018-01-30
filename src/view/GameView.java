@@ -15,7 +15,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Obstacle;
 import org.w3c.dom.css.Rect;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -42,9 +41,10 @@ public class GameView implements EventTarget {
     private CarView carView;
     private Rectangle[] obstacles;
     private MenuView menu;
-    private Text fpsLabel;
+    private Text fpsLabel, timeLabel;
     private Rectangle startingLine, checkpoint;
     private Pane gamePane;
+    private double time;
 
     public Scene getScene() {
         return scene;
@@ -91,7 +91,12 @@ public class GameView implements EventTarget {
         fpsLabel = new Text(1200, 30,"0 FPS");
         fpsLabel.setFont(new Font(20));
         fpsLabel.setFill(Color.YELLOW);
+        timeLabel = new Text(1100, 30,"00:00");
+        timeLabel.setFont(new Font(20));
+        timeLabel.setFill(Color.YELLOW);
+        time = 0;
         gamePane.getChildren().add(fpsLabel);
+        gamePane.getChildren().add(timeLabel);
         rootPane.getChildren().add(gamePane);
     }
 
@@ -113,12 +118,25 @@ public class GameView implements EventTarget {
     }
 
     public void drawObstacles(Obstacle[] obstacles) {
+        Rectangle upperSafeArea = new Rectangle(620, 50, 60, 100);
+        Rectangle lowerSafeArea = new Rectangle(620, 650, 60, 100);
+        upperSafeArea.setFill(Color.TRANSPARENT);
+        lowerSafeArea.setFill(Color.TRANSPARENT);
+        gamePane.getChildren().add(upperSafeArea);
+        gamePane.getChildren().add(lowerSafeArea);
         this.obstacles = new Rectangle[obstacles.length];
         for (int i = 0; i < obstacles.length; i++) {
             Rectangle rect = new Rectangle(obstacles[i].getX(), obstacles[i].getY(), obstacles[i].getWidth(), obstacles[i].getHeight());
             rect.setFill(Paint.valueOf("#FFFF00"));
             this.obstacles[i] = rect;
             gamePane.getChildren().add(rect);
+            Bounds upperBounds = upperSafeArea.getBoundsInParent();
+            Bounds lowerBounds = lowerSafeArea.getBoundsInParent();
+            Bounds bounds = rect.getBoundsInParent();
+            if (upperBounds.intersects(bounds) || lowerBounds.intersects(bounds)){
+                gamePane.getChildren().remove(rect);
+            }
+
         }
     }
 
@@ -145,7 +163,7 @@ public class GameView implements EventTarget {
     public void checkForCollision(boolean checkpointPassed) {
         for (int i = 0; i < obstacles.length; i++) {
             Bounds bounds = obstacles[i].getBoundsInParent();
-            if (bounds.intersects(carView.getBoundsInParent())) {
+            if (obstacles[i].getParent() != null && bounds.intersects(carView.getBoundsInParent())) {
                 obstacles[i].setFill(Paint.valueOf("FF0000"));
                 fireEvent(new RaceEvent(RaceEvent.CRASH));
                 break;
@@ -160,11 +178,29 @@ public class GameView implements EventTarget {
         if (checkpointPassed && startingLineBounds.intersects(carView.getBoundsInParent())) {
             startingLine.setFill(Color.BLUEVIOLET);
             fireEvent(new RaceEvent(RaceEvent.FINISH));
+        }else if (startingLineBounds.intersects(carView.getBoundsInParent())) {
+            startingLine.setFill(Color.WHITE);
+            fireEvent(new RaceEvent(RaceEvent.STARTINGLINE));
+
         }
     }
 
     public void updateFpsLabel(int fps) {
         fpsLabel.setText(fps + " FPS");
+    }
+
+    public void updateTimeLabel(double delta) {
+        time += delta;
+        int secs = (int) time;
+        int mins = (int) (time/60);
+        timeLabel.setText(toDoubleDigits(mins) + ":" + toDoubleDigits(secs));
+
+    }
+
+    private String toDoubleDigits(int x) {
+        if (x > 9)
+            return "" + x;
+        return "0" + x;
     }
 
     public final <T extends Event> void addEventHandler(EventType<T> eventType, EventHandler<? super T> eventHandler) {

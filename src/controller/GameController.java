@@ -31,6 +31,9 @@ public class GameController {
         gameView.addEventHandler(RaceEvent.CHECKPOINT,event -> {
             gameModel.checkpointPassed = true;
         });
+        gameView.addEventHandler(RaceEvent.STARTINGLINE,event -> {
+            gameModel.startingLinePassed = true;
+        });
         gameView.addEventHandler(RaceEvent.FINISH,event -> {
             gameModel.gamePaused = gameView.toggleMenu("Congrats! You won!");
         });
@@ -49,6 +52,8 @@ public class GameController {
         gameModel.updateCar(gameView.setCarPosition(gameModel.getCarSpeed() * timeDifferenceInSeconds), timeDifferenceInSeconds);
         gameView.setCarRotation(gameModel.getCarRotation());
         gameView.checkForCollision(gameModel.checkpointPassed);
+        if (gameModel.startingLinePassed)
+            gameView.updateTimeLabel(timeDifferenceInSeconds);
     }
 
     private void setUpInputHandler() {
@@ -79,6 +84,8 @@ public class GameController {
             case P:
                 gameModel.gamePaused = gameView.toggleMenu("Pause");
                 break;
+            case R:
+
         }
     }
     private void setOnKeyReleased(KeyEvent e){
