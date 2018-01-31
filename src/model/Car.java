@@ -31,16 +31,10 @@ public class Car {
     public boolean isOnTrack;
     public boolean writeOff;
 
-    /**
-     *
-     */
     public enum AccelerationStatus {
         ACCELERATING, NONE, BRAKING
     }
 
-    /**
-     *
-     */
     public enum RotationStatus {
         LEFT, NONE, RIGHT
     }
@@ -48,9 +42,6 @@ public class Car {
     public AccelerationStatus accelerationStatus;
     public RotationStatus rotationStatus;
 
-    /**
-     *
-     */
     public Car() {
         isOnTrack = true;
         rotation = 0;
@@ -60,12 +51,7 @@ public class Car {
         rotationStatus = RotationStatus.NONE;
     }
 
-    /**
-     *
-     * @param position
-     * @param timeDifference
-     */
-    public void updateValues(Point2D position, double timeDifference) {
+    public void updateValues(Point2D position) {
         this.position = position;
         switch (accelerationStatus) {
             case ACCELERATING:
@@ -78,7 +64,7 @@ public class Car {
                 acceleration = 0;
                 break;
         }
-        physics(timeDifference);
+        physics();
         updateSpeed();
         if (speed == 0)
             return;
@@ -93,11 +79,7 @@ public class Car {
         }
     }
 
-    /**
-     *
-     * @param timeDifference
-     */
-    private void physics(double timeDifference) {
+    private void physics() {
         double cR = isOnTrack ? c1 : c2;
 //        double aMotor = accelerationStatus == AccelerationStatus.ACCELERATING ? 1 : 0;
 //        speed -= aMotor -(((cR *g) + (airDragCoefficient * frontalArea * 0.5 *aerodynamicDrag * speed * speed))/weight)*timeDifference;
@@ -109,23 +91,14 @@ public class Car {
         acceleration = (Fcar - Fr - Fair) / weight;
     }
 
-    /**
-     *
-     */
     private void rotateLeft(){
         rotation -= rotationRadius;
     }
 
-    /**
-     *
-     */
     private void rotateRight(){
         rotation += rotationRadius;
     }
 
-    /**
-     *
-     */
     private void updateSpeed(){
         speed += acceleration;
         if (speed < 0)
@@ -134,33 +107,18 @@ public class Car {
             speed = maxSpeed;
     }
 
-    /**
-     *
-     * @return
-     */
     public double getSpeed(){
         return speed;
     }
 
-    /**
-     *
-     * @return
-     */
     public double getRotation() {
         return rotation;
     }
 
-    /**
-     *
-     * @return
-     */
     public Point2D getPosition() {
         return position;
     }
 
-    /**
-     *
-     */
     public void hitObstacle() {
         speed = 0;
     }

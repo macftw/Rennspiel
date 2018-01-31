@@ -30,11 +30,11 @@ public class GameController {
         gameView.drawObstacles(gameModel.getObstacles());
 
         gameView.addEventHandler(RaceEvent.START,event -> {
-            gameModel.gamePaused = gameView.toggleMenu("Pause");
+            gameModel.gamePaused = gameView.toggleMenu("Pause", "Press P to resume");
             setUpInputHandler();
         });
         gameView.addEventHandler(RaceEvent.CRASH,event -> {
-            gameModel.gamePaused = gameView.toggleMenu("Game over!");
+            gameModel.gamePaused = gameView.toggleMenu("Game over!", "Press R to restart");
         });
         gameView.addEventHandler(RaceEvent.CHECKPOINT,event -> {
             gameModel.checkpointPassed = true;
@@ -43,12 +43,12 @@ public class GameController {
             gameModel.startingLinePassed = true;
         });
         gameView.addEventHandler(RaceEvent.FINISH,event -> {
-            gameModel.gamePaused = gameView.toggleMenu("Congrats! You won!");
+            gameModel.gamePaused = gameView.toggleMenu("Congrats!\nYou won!", "Press R to play again.");
         });
         gameView.addEventHandler(RaceEvent.OBSTACLE,event -> {
             gameModel.hitObstacle();
         });
-        gameModel.gamePaused = gameView.toggleMenu("Rennspiel");
+        gameModel.gamePaused = gameView.toggleMenu("Rennspiel", GameModel.WELCOME_MSG);
     }
 
     /**
@@ -60,7 +60,7 @@ public class GameController {
         gameView.updateFpsLabel((int)(1 / timeDifferenceInSeconds));
         if (gameModel.gamePaused)
             return;
-        gameModel.updateCar(gameView.setCarPosition(gameModel.getCarSpeed() * timeDifferenceInSeconds), timeDifferenceInSeconds);
+        gameModel.updateCar(gameView.setCarPosition(gameModel.getCarSpeed() * timeDifferenceInSeconds));
         gameView.setCarRotation(gameModel.getCarRotation());
         gameView.checkLines(gameModel.checkpointPassed);
         gameView.checkForCollision(gameModel.getCarSpeed());
@@ -101,7 +101,7 @@ public class GameController {
                 gameModel.rotateRight(false);
                 break;
             case P:
-                gameModel.gamePaused = gameView.toggleMenu("Pause");
+                gameModel.gamePaused = gameView.toggleMenu("Pause", "Press P to resume");
                 break;
             case R:
                 reset();
@@ -138,6 +138,6 @@ public class GameController {
         gameModel.reset();
         gameView.reset();
         gameView.drawObstacles(gameModel.getObstacles());
-        gameModel.gamePaused = gameView.toggleMenu("Rennspiel");
+        gameModel.gamePaused = gameView.toggleMenu("Rennspiel", GameModel.WELCOME_MSG);
     }
 }
