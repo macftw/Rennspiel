@@ -7,12 +7,20 @@ import model.*;
 import view.GameView;
 import events.RaceEvent;
 
+/**
+ *
+ */
 public class GameController {
 
     private GameModel gameModel;
     private GameView gameView;
     private Scene scene;
 
+    /**
+     *
+     * @param gameModel
+     * @param gameView
+     */
     public GameController(GameModel gameModel, GameView gameView) {
         this.gameView = gameView;
         this.gameModel = gameModel;
@@ -22,7 +30,7 @@ public class GameController {
         gameView.drawObstacles(gameModel.getObstacles());
 
         gameView.addEventHandler(RaceEvent.START,event -> {
-            gameModel.gamePaused = gameView.toggleMenu("Pause", "Press P to resume");
+            gameModel.gamePaused = gameView.toggleMenu("Pause", GameModel.PAUSE_MSG);
             setUpInputHandler();
         });
         gameView.addEventHandler(RaceEvent.CRASH,event -> {
@@ -35,7 +43,7 @@ public class GameController {
             gameModel.startingLinePassed = true;
         });
         gameView.addEventHandler(RaceEvent.FINISH,event -> {
-            gameModel.gamePaused = gameView.toggleMenu("Congrats!\nYou won!", "Press R to play again.");
+            gameModel.gamePaused = gameView.toggleMenu("Congrats!\nYou won!", "Your time: " + event.time + "s\nPress R to play again.");
         });
         gameView.addEventHandler(RaceEvent.OBSTACLE,event -> {
             gameModel.hitObstacle();
@@ -60,6 +68,9 @@ public class GameController {
             gameView.updateTimeLabel(timeDifferenceInSeconds);
     }
 
+    /**
+     *
+     */
     private void setUpInputHandler() {
         /*
          * Useful actions:
@@ -70,6 +81,10 @@ public class GameController {
         this.scene.addEventHandler(KeyEvent.KEY_RELEASED, this::setOnKeyReleased);
     }
 
+    /**
+     *
+     * @param e
+     */
     private void setOnKeyPressed(KeyEvent e){
         KeyCode keyCode = e.getCode();
         switch ( keyCode ) {
@@ -86,13 +101,18 @@ public class GameController {
                 gameModel.rotateRight(false);
                 break;
             case P:
-                gameModel.gamePaused = gameView.toggleMenu("Pause", "Press P to resume");
+                gameModel.gamePaused = gameView.toggleMenu("Pause", GameModel.PAUSE_MSG);
                 break;
             case R:
                 reset();
                 break;
         }
     }
+
+    /**
+     *
+     * @param e
+     */
     private void setOnKeyReleased(KeyEvent e){
         KeyCode keyCode = e.getCode();
         switch ( keyCode ) {
@@ -111,6 +131,9 @@ public class GameController {
         }
     }
 
+    /**
+     *
+     */
     private void reset() {
         gameModel.reset();
         gameView.reset();

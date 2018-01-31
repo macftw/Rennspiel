@@ -234,7 +234,7 @@ public class GameView implements EventTarget {
         Bounds startingLineBounds = startingLine.getBoundsInParent();
         if (checkpointPassed && startingLineBounds.intersects(carView.getBoundsInParent())) {
             startingLine.setFill(Color.BLUEVIOLET);
-            fireEvent(new RaceEvent(RaceEvent.FINISH));
+            fireEvent(new RaceEvent(RaceEvent.FINISH, time));
         }else if (startingLineBounds.intersects(carView.getBoundsInParent())) {
             startingLine.setFill(Color.WHITE);
             fireEvent(new RaceEvent(RaceEvent.STARTINGLINE));
@@ -251,7 +251,6 @@ public class GameView implements EventTarget {
         int secs = (int) time;
         int mins = (int) (time/60);
         timeLabel.setText(toDoubleDigits(mins) + ":" + toDoubleDigits(secs));
-
     }
 
     private String toDoubleDigits(int x) {

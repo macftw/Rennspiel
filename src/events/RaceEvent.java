@@ -3,6 +3,9 @@ package events;
 import javafx.event.Event;
 import javafx.event.EventType;
 
+/**
+ *
+ */
 public class RaceEvent extends Event {
 
     public static final EventType<RaceEvent> CRASH = new EventType(ANY, "CRASH");
@@ -12,8 +15,19 @@ public class RaceEvent extends Event {
     public static final EventType<RaceEvent> FINISH = new EventType(ANY, "FINISH");
     public static final EventType<RaceEvent> OBSTACLE = new EventType(ANY, "OBSTACLE");
 
+    public double time;
+
+    /**
+     *
+     * @param type
+     */
     public RaceEvent(EventType<RaceEvent> type) {
         super(type);
+    }
+
+    public RaceEvent(EventType<RaceEvent> type, double time) {
+        super(type);
+        this.time = time;
     }
 
 }

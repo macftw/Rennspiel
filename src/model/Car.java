@@ -93,7 +93,6 @@ public class Car {
 
     private void rotateLeft(){
         rotation -= rotationRadius;
-
     }
 
     private void rotateRight(){
