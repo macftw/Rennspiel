@@ -46,6 +46,10 @@ public class GameModel {
         return car;
     }
 
+    /**
+     *
+     * @param newPos
+     */
     public void updateCar(Point2D newPos) {
         car.updateValues(newPos);
         car.isOnTrack = raceTrackOuter.contains((float)car.getPosition().getX(), (float)car.getPosition().getY())
@@ -53,24 +57,49 @@ public class GameModel {
 //        car.isOnTrack = raceTrackOuter.contains(car.getPosition()) && !raceTrackInner.contains(car.getPosition());
     }
 
+    /**
+     *
+     * @param release
+     */
     public void rotateLeft(boolean release){
         car.rotationStatus = release ? Car.RotationStatus.NONE : Car.RotationStatus.LEFT;
     }
+
+    /**
+     *
+     * @param release
+     */
     public void rotateRight(boolean release){
         car.rotationStatus = release ? Car.RotationStatus.NONE : Car.RotationStatus.RIGHT;
     }
+
+    /**
+     *
+     * @return
+     */
     public double getCarRotation(){
         return car.getRotation();
     }
 
+    /**
+     *
+     * @param release
+     */
     public void accelerate(boolean release){
         car.accelerationStatus = release ? Car.AccelerationStatus.NONE : Car.AccelerationStatus.ACCELERATING;
     }
 
+    /**
+     *
+     * @param release
+     */
     public void brake(boolean release){
         car.accelerationStatus = release ? Car.AccelerationStatus.NONE : Car.AccelerationStatus.BRAKING;
     }
 
+    /**
+     *
+     */
     public void hitObstacle() {
         car.hitObstacle();
     }
@@ -92,10 +121,17 @@ public class GameModel {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public Obstacle[][] getObstacles() {
         return obstacles;
     }
 
+    /**
+     *
+     */
     public void reset() {
         car = initializeCar();
         raceTrackInner = new Ellipse2D(200, 150, 900, 500);

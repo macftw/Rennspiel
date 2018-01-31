@@ -62,12 +62,21 @@ public class CarView extends Region {
         };
     }
 
+    /**
+     *
+     * @param degrees
+     */
     public void setRotation(double degrees) {
 //        rotation.setPivotX(getPosition().getX());
 //        rotation.setPivotY(getPosition().getY());
         rotation.setAngle(degrees);
     }
 
+    /**
+     *
+     * @param delta
+     * @return
+     */
     public Point2D setPosition(double delta) {
         double x = -Math.cos(rotation.getAngle() * Math.PI / 180) * delta;
         double y = -Math.sin(rotation.getAngle() * Math.PI / 180) * delta;
@@ -76,6 +85,10 @@ public class CarView extends Region {
         return new Point2D((float)translate.getX(), (float)translate.getY());
     }
 
+    /**
+     *
+     * @return
+     */
     public Point2D getTopLeft() {
         return localToScene(Point2D.ZERO);
     }
@@ -92,6 +105,9 @@ public class CarView extends Region {
         return localToScene(new Point2D(imageWidth / 2, imageHeight));
     }
 
+    /**
+     *
+     */
     public void explode() {
         getChildren().remove(imgView);
         getChildren().add(explosionView);

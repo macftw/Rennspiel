@@ -11,6 +11,13 @@ import javafx.scene.text.TextAlignment;
 
 public class MenuView extends BorderPane {
 
+    /**
+     *
+     * @param width
+     * @param height
+     * @param title
+     * @param message
+     */
     public MenuView(double width, double height, String title, String message) {
         super();
         // setup pane

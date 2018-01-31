@@ -42,6 +42,9 @@ public class Car {
     public AccelerationStatus accelerationStatus;
     public RotationStatus rotationStatus;
 
+    /**
+     *
+     */
     public Car() {
         isOnTrack = true;
         rotation = 0;
@@ -51,6 +54,10 @@ public class Car {
         rotationStatus = RotationStatus.NONE;
     }
 
+    /**
+     *
+     * @param position
+     */
     public void updateValues(Point2D position) {
         this.position = position;
         switch (accelerationStatus) {
@@ -79,6 +86,9 @@ public class Car {
         }
     }
 
+    /**
+     *
+     */
     private void physics() {
         double cR = isOnTrack ? c1 : c2;
 //        double aMotor = accelerationStatus == AccelerationStatus.ACCELERATING ? 1 : 0;
@@ -91,14 +101,23 @@ public class Car {
         acceleration = (Fcar - Fr - Fair) / weight;
     }
 
+    /**
+     *
+     */
     private void rotateLeft(){
         rotation -= rotationRadius;
     }
 
+    /**
+     *
+     */
     private void rotateRight(){
         rotation += rotationRadius;
     }
 
+    /**
+     *
+     */
     private void updateSpeed(){
         speed += acceleration;
         if (speed < 0)

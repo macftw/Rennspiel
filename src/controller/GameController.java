@@ -9,7 +9,7 @@ import view.GameView;
 import events.RaceEvent;
 
 /**
- *
+ * Creates a Controller
  */
 public class GameController {
 
@@ -52,6 +52,9 @@ public class GameController {
             gameView.updateTimeLabel(timeDifferenceInSeconds);
     }
 
+    /**
+     *
+     */
     private void setUpGameViewHandlers() {
         gameView.addEventHandler(RaceEvent.START,event -> {
             gameModel.gamePaused = gameView.toggleMenu("Pause", GameModel.PAUSE_MSG);

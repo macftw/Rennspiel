@@ -4,7 +4,7 @@ import javafx.event.Event;
 import javafx.event.EventType;
 
 /**
- *
+ * Creates EventTypes for RaceEvent
  */
 public class RaceEvent extends Event {
 
@@ -25,6 +25,11 @@ public class RaceEvent extends Event {
         super(type);
     }
 
+    /**
+     *
+     * @param type
+     * @param time
+     */
     public RaceEvent(EventType<RaceEvent> type, String time) {
         super(type);
         this.time = time;
