@@ -51,7 +51,7 @@ public class Car {
         rotationStatus = RotationStatus.NONE;
     }
 
-    public void updateValues(Point2D position, double timeDifference) {
+    public void updateValues(Point2D position) {
         this.position = position;
         switch (accelerationStatus) {
             case ACCELERATING:
@@ -64,7 +64,7 @@ public class Car {
                 acceleration = 0;
                 break;
         }
-        physics(timeDifference);
+        physics();
         updateSpeed();
         if (speed == 0)
             return;
@@ -79,7 +79,7 @@ public class Car {
         }
     }
 
-    private void physics(double timeDifference) {
+    private void physics() {
         double cR = isOnTrack ? c1 : c2;
 //        double aMotor = accelerationStatus == AccelerationStatus.ACCELERATING ? 1 : 0;
 //        speed -= aMotor -(((cR *g) + (airDragCoefficient * frontalArea * 0.5 *aerodynamicDrag * speed * speed))/weight)*timeDifference;

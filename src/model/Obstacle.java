@@ -1,18 +1,25 @@
 package model;
 
-import javafx.scene.shape.Rectangle;
+import javafx.stage.Screen;
+import view.GameView;
 
 public class Obstacle {
 
-    final double MIN_WIDTH = 10;
-    final double MIN_HEIGHT = 10;
-    final double MAX_WIDTH = 30;
-    final double MAX_HEIGHT = 30;
+    private static final double MIN_SIZE = 10;
+    public static final double MAX_SIZE = 30;
     private double x, y, width, height;
+    private final double mid_x = GameView.SCREEN_WIDTH / 2;
+    private final double mid_y = GameView.SCREEN_HEIGHT / 2;
+    private final double x_padding = 50;
+    private final double y_padding = 50;
 
-    public Obstacle(int min_x, int max_x, int min_y, int max_y) {
-        this.width = MIN_WIDTH + MAX_WIDTH * Math.random();
-        this.height = MIN_HEIGHT + MAX_HEIGHT * Math.random();
+    Obstacle(int area) {
+        this.width = MIN_SIZE + MAX_SIZE * Math.random();
+        this.height = MIN_SIZE + MAX_SIZE * Math.random();
+        double min_x =  area % 2 == 1 ? mid_x : x_padding;
+        double min_y =  area < 2 ? y_padding : mid_y;
+        double max_x = (mid_x + (area % 2 == 1 ? mid_x : 0)) - x_padding;
+        double max_y = (mid_y + (area < 2 ? 0 : mid_y)) - y_padding;
         this.x = min_x + max_x * Math.random();
         this.y = min_y + max_y * Math.random();
     }

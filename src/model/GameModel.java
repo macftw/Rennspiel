@@ -9,11 +9,12 @@ import javafx.geometry.Point2D;
  */
 public class GameModel {
     final int NUM_OBSTACLES = 100;
+    public static String WELCOME_MSG = "Use the arrow keys to drive the car.\nPress P to pause and R to restart the game.";
     /**
      * The car that is driven on the racetrack
      */
     private Car car;
-    private Obstacle[] obstacles;
+    private Obstacle[][] obstacles;
     private Ellipse2D raceTrackInner, raceTrackOuter;
 
     public boolean checkpointPassed;
@@ -43,8 +44,8 @@ public class GameModel {
         return car;
     }
 
-    public void updateCar(Point2D newPos, double timeDifference) {
-        car.updateValues(newPos, timeDifference);
+    public void updateCar(Point2D newPos) {
+        car.updateValues(newPos);
         car.isOnTrack = raceTrackOuter.contains((float)car.getPosition().getX(), (float)car.getPosition().getY())
                 && !raceTrackInner.contains((float)car.getPosition().getX(), (float)car.getPosition().getY());
 //        car.isOnTrack = raceTrackOuter.contains(car.getPosition()) && !raceTrackInner.contains(car.getPosition());
@@ -80,13 +81,16 @@ public class GameModel {
      *
      */
     private void generateObstacles() {
-        obstacles = new Obstacle[NUM_OBSTACLES];
-        for (int i = 0; i < NUM_OBSTACLES; i++) {
-            obstacles[i] = new Obstacle(50, 1250, 50, 750);
+        obstacles = new Obstacle[4][NUM_OBSTACLES];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < NUM_OBSTACLES; j++) {
+                obstacles[i][j] = new Obstacle(i);
+//                obstacles[i][j] = new Obstacle(50, 1250, 50, 750);
+            }
         }
     }
 
-    public Obstacle[] getObstacles() {
+    public Obstacle[][] getObstacles() {
         return obstacles;
     }
 

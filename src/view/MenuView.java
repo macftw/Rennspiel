@@ -11,7 +11,7 @@ import javafx.scene.text.TextAlignment;
 
 public class MenuView extends BorderPane {
 
-    public MenuView(double width, double height, String title) {
+    public MenuView(double width, double height, String title, String message) {
         super();
         // setup pane
         setBackground(new Background(new BackgroundFill(Color.grayRgb(0, 0.5), CornerRadii.EMPTY, Insets.EMPTY)));
@@ -34,14 +34,7 @@ public class MenuView extends BorderPane {
         Text helpTxt = new Text();
         helpTxt.setFont(new Font(24));
         helpTxt.setFill(Color.WHITE);
-        helpTxt.setText("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, \n" +
-                "sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, \n" +
-                "sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. \n" +
-                "Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. \n" +
-                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor \n" +
-                "invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. \n" +
-                "At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, \n" +
-                "no sea takimata sanctus est Lorem ipsum dolor sit amet.");
+        helpTxt.setText(message);
         centerBox.getChildren().add(helpTxt);
         setCenter(centerBox);
 

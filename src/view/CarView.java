@@ -55,7 +55,7 @@ public class CarView extends Region {
     }
 
     public Point2D getTopRight() {
-        return localToScene(new Point2D(imageWidth, 0));
+        return localToScene(new Point2D(imageWidth / 2, 0));
     }
 
     public Point2D getBottomLeft() {
@@ -63,6 +63,6 @@ public class CarView extends Region {
     }
 
     public Point2D getBottomRight() {
-        return localToScene(new Point2D(imageWidth, imageHeight));
+        return localToScene(new Point2D(imageWidth / 2, imageHeight));
     }
 }

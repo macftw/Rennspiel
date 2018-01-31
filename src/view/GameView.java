@@ -12,13 +12,11 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.Obstacle;
-import org.w3c.dom.css.Rect;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 
 /**
  * Contains every GUI element
@@ -26,8 +24,8 @@ import java.util.Map;
 public class GameView implements EventTarget {
 
     private final double CRASH_SPEED = 100;
-    private final double SCREEN_WIDTH = 1300;
-    private final double SCREEN_HEIGHT = 800;
+    public static final double SCREEN_WIDTH = 1300;
+    public static final double SCREEN_HEIGHT = 800;
     private final double carStartX = 660;
     private final double carStartY = 91;
 
@@ -40,7 +38,8 @@ public class GameView implements EventTarget {
     //Stackpane, where all dialogs are stacked
     private StackPane rootPane;
     private CarView carView;
-    private Rectangle[] obstacles;
+    private Rectangle[][] obstacles;
+    private Rectangle[] areas;
     private MenuView menu;
     private Text fpsLabel, timeLabel;
     private Rectangle startingLine, checkpoint;
@@ -99,9 +98,25 @@ public class GameView implements EventTarget {
         gamePane.getChildren().add(fpsLabel);
         gamePane.getChildren().add(timeLabel);
         rootPane.getChildren().add(gamePane);
+
+        areas = new Rectangle[4];
+        for (int i = 0; i < 4; i++) {
+            areas[i] = new Rectangle(
+                    SCREEN_WIDTH / 2 * (i % 2),
+                    SCREEN_HEIGHT / 2 * (i < 2 ? 0 : 1),
+                    SCREEN_WIDTH / 2 + Obstacle.MAX_SIZE,
+                    SCREEN_HEIGHT / 2 + Obstacle.MAX_SIZE);
+            areas[i].setFill(Color.TRANSPARENT);
+            areas[i].setStrokeWidth(5);
+            gamePane.getChildren().add(areas[i]);
+        }
+//        areas[0].setStroke(Color.GREEN);
+//        areas[1].setStroke(Color.RED);
+//        areas[2].setStroke(Color.BLUE);
+//        areas[3].setStroke(Color.ORANGE);
     }
 
-    public boolean toggleMenu(String title) {
+    public boolean toggleMenu(String title, String message) {
         if (menu != null) {
             System.out.println("Hide menu");
             gamePane.getChildren().remove(menu);
@@ -109,7 +124,7 @@ public class GameView implements EventTarget {
             return false;
         } else {
             System.out.println("Show menu");
-            menu = new MenuView(SCREEN_WIDTH, SCREEN_HEIGHT, title);
+            menu = new MenuView(SCREEN_WIDTH, SCREEN_HEIGHT, title, message);
             menu.addEventHandler(ActionEvent.ACTION, event -> {
                 fireEvent(new RaceEvent(RaceEvent.START));
             });
@@ -118,38 +133,47 @@ public class GameView implements EventTarget {
         }
     }
 
-    public void drawObstacles(Obstacle[] obstacles) {
+    public void drawObstacles(Obstacle[][] obstacles) {
         Rectangle upperSafeArea = new Rectangle(620, 50, 90, 100);
         Rectangle lowerSafeArea = new Rectangle(620, 650, 60, 100);
+        Rectangle middleSafeArea = new Rectangle(300, 250, 700, 300);
         upperSafeArea.setFill(Color.TRANSPARENT);
         lowerSafeArea.setFill(Color.TRANSPARENT);
+        middleSafeArea.setFill(Color.TRANSPARENT);
         gamePane.getChildren().add(upperSafeArea);
         gamePane.getChildren().add(lowerSafeArea);
-        this.obstacles = new Rectangle[obstacles.length];
+        gamePane.getChildren().add(middleSafeArea);
+        this.obstacles = new Rectangle[obstacles.length][];
+//        Color[] colors = {Color.MAGENTA, Color.CYAN, Color.GREEN, Color.YELLOW};
         for (int i = 0; i < obstacles.length; i++) {
-            Rectangle rect = new Rectangle(obstacles[i].getX(), obstacles[i].getY(), obstacles[i].getWidth(), obstacles[i].getHeight());
-            rect.setFill(Paint.valueOf("#FFFF00"));
-            this.obstacles[i] = rect;
-            gamePane.getChildren().add(rect);
-            Bounds upperBounds = upperSafeArea.getBoundsInParent();
-            Bounds lowerBounds = lowerSafeArea.getBoundsInParent();
-            Bounds bounds = rect.getBoundsInParent();
-            if (upperBounds.intersects(bounds) || lowerBounds.intersects(bounds)){
-                gamePane.getChildren().remove(rect);
+            List<Rectangle> _temp = new ArrayList<>();
+            for (int j = 0; j < obstacles[i].length; j++) {
+                Rectangle rect = new Rectangle(obstacles[i][j].getX(), obstacles[i][j].getY(), obstacles[i][j].getWidth(), obstacles[i][j].getHeight());
+                rect.setFill(Color.CORAL);
+                gamePane.getChildren().add(rect);
+                Bounds upperBounds = upperSafeArea.getBoundsInParent();
+                Bounds lowerBounds = lowerSafeArea.getBoundsInParent();
+                Bounds middleBounds = middleSafeArea.getBoundsInParent();
+                Bounds bounds = rect.getBoundsInParent();
+                if (upperBounds.intersects(bounds) || lowerBounds.intersects(bounds) ||middleBounds.intersects(bounds)) {
+                    gamePane.getChildren().remove(rect);
+                } else {
+                    _temp.add(rect);
+                }
             }
-
+            this.obstacles[i] = _temp.toArray(new Rectangle[_temp.size()]);
         }
     }
 
     public void drawStartingLine(){
-        startingLine = new Rectangle(650, 50, 5, 100);
-        startingLine.setFill(Paint.valueOf("FF00FF"));
+        startingLine = new Rectangle(655, 50, 1, 100);
+        startingLine.setFill(Color.TRANSPARENT);
         gamePane.getChildren().add(startingLine);
     }
 
     public void drawCheckpoint() {
-        checkpoint = new Rectangle(650, 650, 5, 100);
-        checkpoint.setFill(Paint.valueOf("#FF00FF"));
+        checkpoint = new Rectangle(655, 650, 1, 100);
+        checkpoint.setFill(Color.TRANSPARENT);
         gamePane.getChildren().add(checkpoint);
     }
 
@@ -163,20 +187,35 @@ public class GameView implements EventTarget {
     }
 
     public void checkForCollision(double carSpeed) {
-        for (int i = 0; i < obstacles.length; i++) {
-            if (obstacles[i].getParent() == null)
+        boolean[] activeArea = new boolean[areas.length];
+//        for(int k = 0; k < 4; k++) {
+//            areas[k].setStroke(Color.WHITE);
+//        }
+        for (int area = 0; area < areas.length; area++) {
+            //                areas[area].setStroke(Color.MAGENTA);
+            activeArea[area] = areas[area].getBoundsInParent().contains(carView.getTopLeft())
+                    || areas[area].getBoundsInParent().contains(carView.getTopRight())
+                    || areas[area].getBoundsInParent().contains(carView.getBottomLeft())
+                    || areas[area].getBoundsInParent().contains(carView.getBottomRight());
+        }
+        for (int i = 0; i < areas.length; i++) {
+            if (!activeArea[i])
                 continue;
-            Bounds bounds = obstacles[i].getBoundsInParent();
-            if (bounds.contains(carView.getTopLeft())
-//                    || bounds.contains(carView.getTopRight())
-                    || bounds.contains(carView.getBottomLeft())) {
-//                    || bounds.contains(carView.getBottomRight())) {
-                obstacles[i].setFill(Paint.valueOf("FF0000"));
-                if (carSpeed > CRASH_SPEED)
-                    fireEvent(new RaceEvent(RaceEvent.CRASH));
-                else
-                    fireEvent(new RaceEvent(RaceEvent.OBSTACLE));
-                break;
+            for (int j = 0; j < obstacles[i].length; j++) {
+                if (obstacles[i][j].getParent() == null)
+                    continue;
+                Bounds bounds = obstacles[i][j].getBoundsInParent();
+                if (bounds.contains(carView.getTopLeft())
+                        || bounds.contains(carView.getTopRight())
+                        || bounds.contains(carView.getBottomLeft())
+                        || bounds.contains(carView.getBottomRight())) {
+                    obstacles[i][j].setFill(Paint.valueOf("FF0000"));
+                    if (carSpeed > CRASH_SPEED)
+                        fireEvent(new RaceEvent(RaceEvent.CRASH));
+                    else
+                        fireEvent(new RaceEvent(RaceEvent.OBSTACLE));
+                    break;
+                }
             }
         }
     }
