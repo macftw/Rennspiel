@@ -1,11 +1,16 @@
 package view;
 
+import javafx.animation.Transition;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
+import javafx.util.Duration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CarView extends Region {
 
@@ -13,6 +18,9 @@ public class CarView extends Region {
     public double imageWidth, imageHeight;
     private Rotate rotation;
     private Translate translate;
+    private List<Image> explosionImages;
+    private Transition explosionAnimation;
+    private ImageView explosionView;
 
     public CarView(double startX, double startY) {
         super();
@@ -34,6 +42,24 @@ public class CarView extends Region {
 //        rotation.pivotXProperty().bind(Bindings.add(imageWidth / 2, collisionRect.xProperty()));
 //        rotation.pivotYProperty().bind(Bindings.add(imageHeight / 2, collisionRect.yProperty()));
         getTransforms().add(rotation);
+
+        explosionView = new ImageView();
+        explosionImages = new ArrayList<>();
+        String baseUrl = "resources/explosion/expl_";
+        for (int i = 0; i < 15; i++) {
+            explosionImages.add(new Image(baseUrl + i + ".png"));
+        }
+        explosionAnimation = new Transition() {
+            {
+                setCycleDuration(Duration.millis(1000)); // total time for animation
+            }
+
+            @Override
+            protected void interpolate(double fraction) {
+                int index = (int) (fraction*(explosionImages.size()-1));
+                explosionView.setImage(explosionImages.get(index));
+            }
+        };
     }
 
     public void setRotation(double degrees) {
@@ -64,5 +90,9 @@ public class CarView extends Region {
 
     public Point2D getBottomRight() {
         return localToScene(new Point2D(imageWidth / 2, imageHeight));
+    }
+
+    public void explode() {
+        explosionAnimation.play();
     }
 }

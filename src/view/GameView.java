@@ -150,6 +150,9 @@ public class GameView implements EventTarget {
             for (int j = 0; j < obstacles[i].length; j++) {
                 Rectangle rect = new Rectangle(obstacles[i][j].getX(), obstacles[i][j].getY(), obstacles[i][j].getWidth(), obstacles[i][j].getHeight());
                 rect.setFill(Color.CORAL);
+                rect.setStrokeDashOffset(2);
+                rect.setStrokeWidth(2);
+                rect.setStroke(Color.RED);
                 gamePane.getChildren().add(rect);
                 Bounds upperBounds = upperSafeArea.getBoundsInParent();
                 Bounds lowerBounds = lowerSafeArea.getBoundsInParent();
@@ -209,9 +212,11 @@ public class GameView implements EventTarget {
                         || bounds.contains(carView.getTopRight())
                         || bounds.contains(carView.getBottomLeft())
                         || bounds.contains(carView.getBottomRight())) {
-                    obstacles[i][j].setFill(Paint.valueOf("FF0000"));
-                    if (carSpeed > CRASH_SPEED)
+                    obstacles[i][j].setFill(Color.RED);
+                    if (carSpeed > CRASH_SPEED) {
+                        carView.explode();
                         fireEvent(new RaceEvent(RaceEvent.CRASH));
+                    }
                     else
                         fireEvent(new RaceEvent(RaceEvent.OBSTACLE));
                     break;
