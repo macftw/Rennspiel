@@ -15,7 +15,7 @@ public class RaceEvent extends Event {
     public static final EventType<RaceEvent> FINISH = new EventType(ANY, "FINISH");
     public static final EventType<RaceEvent> OBSTACLE = new EventType(ANY, "OBSTACLE");
 
-    public double time;
+    public String time;
 
     /**
      *
@@ -25,7 +25,7 @@ public class RaceEvent extends Event {
         super(type);
     }
 
-    public RaceEvent(EventType<RaceEvent> type, double time) {
+    public RaceEvent(EventType<RaceEvent> type, String time) {
         super(type);
         this.time = time;
     }

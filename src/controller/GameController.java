@@ -43,7 +43,7 @@ public class GameController {
             gameModel.startingLinePassed = true;
         });
         gameView.addEventHandler(RaceEvent.FINISH,event -> {
-            gameModel.gamePaused = gameView.toggleMenu("Congrats!\nYou won!", "Your time: " + event.time + "s\nPress R to play again.");
+            gameModel.gamePaused = gameView.toggleMenu("Congrats!\nYou won!", "Your time: " + event.time + "\nPress R to play again.");
         });
         gameView.addEventHandler(RaceEvent.OBSTACLE,event -> {
             gameModel.hitObstacle();
