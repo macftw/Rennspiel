@@ -101,6 +101,12 @@ public class GameView implements EventTarget {
         rootPane.getChildren().add(gamePane);
     }
 
+    /**
+     * Sets up the
+     *
+     * @param title
+     * @return
+     */
     public boolean toggleMenu(String title) {
         if (menu != null) {
             System.out.println("Hide menu");
@@ -118,6 +124,10 @@ public class GameView implements EventTarget {
         }
     }
 
+    /**
+     *
+     * @param obstacles
+     */
     public void drawObstacles(Obstacle[] obstacles) {
         Rectangle upperSafeArea = new Rectangle(620, 50, 90, 100);
         Rectangle lowerSafeArea = new Rectangle(620, 650, 60, 100);
@@ -141,27 +151,46 @@ public class GameView implements EventTarget {
         }
     }
 
+    /**
+     *
+     */
     public void drawStartingLine(){
         startingLine = new Rectangle(650, 50, 5, 100);
         startingLine.setFill(Paint.valueOf("FF00FF"));
         gamePane.getChildren().add(startingLine);
     }
 
+    /**
+     *
+     */
     public void drawCheckpoint() {
         checkpoint = new Rectangle(650, 650, 5, 100);
         checkpoint.setFill(Paint.valueOf("#FF00FF"));
         gamePane.getChildren().add(checkpoint);
     }
 
+    /**
+     *
+     * @param degrees
+     */
     public void setCarRotation(double degrees) {
         this.carView.setRotation(degrees);
     }
 
+    /**
+     *
+     * @param delta
+     * @return
+     */
     public Point2D setCarPosition(double delta) {
         Point2D p =  this.carView.setPosition(delta);
         return p;
     }
 
+    /**
+     *
+     * @param carSpeed
+     */
     public void checkForCollision(double carSpeed) {
         for (int i = 0; i < obstacles.length; i++) {
             if (obstacles[i].getParent() == null)
@@ -181,6 +210,10 @@ public class GameView implements EventTarget {
         }
     }
 
+    /**
+     *
+     * @param checkpointPassed
+     */
     public void checkLines(boolean checkpointPassed) {
         Bounds checkpointBounds = checkpoint.getBoundsInParent();
         if (checkpointBounds.intersects(carView.getBoundsInParent())) {
@@ -198,10 +231,18 @@ public class GameView implements EventTarget {
         }
     }
 
+    /**
+     *
+     * @param fps
+     */
     public void updateFpsLabel(int fps) {
         fpsLabel.setText(fps + " FPS");
     }
 
+    /**
+     *
+     * @param delta
+     */
     public void updateTimeLabel(double delta) {
         time += delta;
         int secs = (int) time;
@@ -210,28 +251,54 @@ public class GameView implements EventTarget {
 
     }
 
+    /**
+     *
+     * @param x
+     * @return
+     */
     private String toDoubleDigits(int x) {
         if (x > 9)
             return "" + x;
         return "0" + x;
     }
 
+    /**
+     *
+     * @param eventType
+     * @param eventHandler
+     * @param <T>
+     */
     public final <T extends Event> void addEventHandler(EventType<T> eventType, EventHandler<? super T> eventHandler) {
         handlers.computeIfAbsent(eventType, (k) -> new ArrayList<>()).add(eventHandler);
     }
 
-
+    /**
+     *
+     * @param tail
+     * @return
+     */
     @Override
     public final EventDispatchChain buildEventDispatchChain(EventDispatchChain tail) {
         return tail.prepend(this::dispatchEvent);
     }
 
+    /**
+     *
+     * @param event
+     * @param handlers
+     */
     private void handleEvent(Event event, Collection<EventHandler> handlers) {
         if (handlers != null) {
             handlers.forEach(handler -> handler.handle(event));
         }
     }
 
+    /**
+     *
+     * @param event
+     * @param tail
+     * @return
+     */
     private Event dispatchEvent(Event event, EventDispatchChain tail) {
         // go through type hierarchy and trigger all handlers
         EventType type = event.getEventType();
@@ -243,10 +310,17 @@ public class GameView implements EventTarget {
         return event;
     }
 
+    /**
+     *
+     * @param event
+     */
     public void fireEvent(Event event) {
         Event.fireEvent(this, event);
     }
 
+    /**
+     *
+     */
     public void reset() {
         menu = null;
         gamePane.getChildren().clear();

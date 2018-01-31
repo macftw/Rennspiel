@@ -31,10 +31,16 @@ public class Car {
     public boolean isOnTrack;
     public boolean writeOff;
 
+    /**
+     *
+     */
     public enum AccelerationStatus {
         ACCELERATING, NONE, BRAKING
     }
 
+    /**
+     *
+     */
     public enum RotationStatus {
         LEFT, NONE, RIGHT
     }
@@ -42,6 +48,9 @@ public class Car {
     public AccelerationStatus accelerationStatus;
     public RotationStatus rotationStatus;
 
+    /**
+     *
+     */
     public Car() {
         isOnTrack = true;
         rotation = 0;
@@ -51,6 +60,11 @@ public class Car {
         rotationStatus = RotationStatus.NONE;
     }
 
+    /**
+     *
+     * @param position
+     * @param timeDifference
+     */
     public void updateValues(Point2D position, double timeDifference) {
         this.position = position;
         switch (accelerationStatus) {
@@ -79,6 +93,10 @@ public class Car {
         }
     }
 
+    /**
+     *
+     * @param timeDifference
+     */
     private void physics(double timeDifference) {
         double cR = isOnTrack ? c1 : c2;
 //        double aMotor = accelerationStatus == AccelerationStatus.ACCELERATING ? 1 : 0;
@@ -91,15 +109,23 @@ public class Car {
         acceleration = (Fcar - Fr - Fair) / weight;
     }
 
+    /**
+     *
+     */
     private void rotateLeft(){
         rotation -= rotationRadius;
-
     }
 
+    /**
+     *
+     */
     private void rotateRight(){
         rotation += rotationRadius;
     }
 
+    /**
+     *
+     */
     private void updateSpeed(){
         speed += acceleration;
         if (speed < 0)
@@ -108,18 +134,33 @@ public class Car {
             speed = maxSpeed;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getSpeed(){
         return speed;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getRotation() {
         return rotation;
     }
 
+    /**
+     *
+     * @return
+     */
     public Point2D getPosition() {
         return position;
     }
 
+    /**
+     *
+     */
     public void hitObstacle() {
         speed = 0;
     }

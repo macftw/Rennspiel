@@ -7,12 +7,20 @@ import model.*;
 import view.GameView;
 import events.RaceEvent;
 
+/**
+ *
+ */
 public class GameController {
 
     private GameModel gameModel;
     private GameView gameView;
     private Scene scene;
 
+    /**
+     *
+     * @param gameModel
+     * @param gameView
+     */
     public GameController(GameModel gameModel, GameView gameView) {
         this.gameView = gameView;
         this.gameModel = gameModel;
@@ -60,6 +68,9 @@ public class GameController {
             gameView.updateTimeLabel(timeDifferenceInSeconds);
     }
 
+    /**
+     *
+     */
     private void setUpInputHandler() {
         /*
          * Useful actions:
@@ -70,6 +81,10 @@ public class GameController {
         this.scene.addEventHandler(KeyEvent.KEY_RELEASED, this::setOnKeyReleased);
     }
 
+    /**
+     *
+     * @param e
+     */
     private void setOnKeyPressed(KeyEvent e){
         KeyCode keyCode = e.getCode();
         switch ( keyCode ) {
@@ -93,6 +108,11 @@ public class GameController {
                 break;
         }
     }
+
+    /**
+     *
+     * @param e
+     */
     private void setOnKeyReleased(KeyEvent e){
         KeyCode keyCode = e.getCode();
         switch ( keyCode ) {
@@ -111,6 +131,9 @@ public class GameController {
         }
     }
 
+    /**
+     *
+     */
     private void reset() {
         gameModel.reset();
         gameView.reset();
