@@ -125,9 +125,15 @@ public class GameView implements EventTarget {
         } else {
             System.out.println("Show menu");
             menu = new MenuView(SCREEN_WIDTH, SCREEN_HEIGHT, title, message);
-            menu.addEventHandler(ActionEvent.ACTION, event -> {
-                fireEvent(new RaceEvent(RaceEvent.START));
-            });
+            EventHandler<ActionEvent> handler = new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    event.consume();
+                    menu.removeEventHandler(ActionEvent.ACTION,this);
+                    fireEvent(new RaceEvent(RaceEvent.START));
+                }
+            };
+            menu.addEventHandler(ActionEvent.ACTION, handler);
             gamePane.getChildren().add(menu);
             return true;
         }

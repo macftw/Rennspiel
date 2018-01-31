@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -15,6 +16,7 @@ public class GameController {
     private GameModel gameModel;
     private GameView gameView;
     private Scene scene;
+    private EventHandler<KeyEvent> keyupHandler, keydownHandler;
 
     /**
      *
@@ -29,25 +31,7 @@ public class GameController {
 
         gameView.drawObstacles(gameModel.getObstacles());
 
-        gameView.addEventHandler(RaceEvent.START,event -> {
-            gameModel.gamePaused = gameView.toggleMenu("Pause", GameModel.PAUSE_MSG);
-            setUpInputHandler();
-        });
-        gameView.addEventHandler(RaceEvent.CRASH,event -> {
-            gameModel.gamePaused = gameView.toggleMenu("Game over!", "Press R to restart");
-        });
-        gameView.addEventHandler(RaceEvent.CHECKPOINT,event -> {
-            gameModel.checkpointPassed = true;
-        });
-        gameView.addEventHandler(RaceEvent.STARTINGLINE,event -> {
-            gameModel.startingLinePassed = true;
-        });
-        gameView.addEventHandler(RaceEvent.FINISH,event -> {
-            gameModel.gamePaused = gameView.toggleMenu("Congrats!\nYou won!", "Your time: " + event.time + "\nPress R to play again.");
-        });
-        gameView.addEventHandler(RaceEvent.OBSTACLE,event -> {
-            gameModel.hitObstacle();
-        });
+        setUpGameViewHandlers();
         gameModel.gamePaused = gameView.toggleMenu("Rennspiel", GameModel.WELCOME_MSG);
     }
 
@@ -68,6 +52,26 @@ public class GameController {
             gameView.updateTimeLabel(timeDifferenceInSeconds);
     }
 
+    private void setUpGameViewHandlers() {
+        gameView.addEventHandler(RaceEvent.START,event -> {
+            gameModel.gamePaused = gameView.toggleMenu("Pause", GameModel.PAUSE_MSG);
+            setUpInputHandler();
+        });
+        gameView.addEventHandler(RaceEvent.CRASH,event -> gameModel.gamePaused = gameView.toggleMenu("Game over!", "Press R to restart"));
+        gameView.addEventHandler(RaceEvent.CHECKPOINT,event -> {
+            gameModel.checkpointPassed = true;
+        });
+        gameView.addEventHandler(RaceEvent.STARTINGLINE,event -> {
+            gameModel.startingLinePassed = true;
+        });
+        gameView.addEventHandler(RaceEvent.FINISH,event -> {
+            gameModel.gamePaused = gameView.toggleMenu("Congrats!\nYou won!", "Your time: " + event.time + "\nPress R to play again.");
+        });
+        gameView.addEventHandler(RaceEvent.OBSTACLE,event -> {
+            gameModel.hitObstacle();
+        });
+    }
+
     /**
      *
      */
@@ -76,9 +80,11 @@ public class GameController {
          * Useful actions:
          * setOnKeyPressed, setOnKeyReleased
          */
-        this.scene.addEventHandler(KeyEvent.KEY_PRESSED, this::setOnKeyPressed);
+        keydownHandler = this::setOnKeyPressed;
+        keyupHandler = this::setOnKeyReleased;
+        this.scene.addEventHandler(KeyEvent.KEY_PRESSED, keydownHandler);
 
-        this.scene.addEventHandler(KeyEvent.KEY_RELEASED, this::setOnKeyReleased);
+        this.scene.addEventHandler(KeyEvent.KEY_RELEASED, keyupHandler);
     }
 
     /**
@@ -86,6 +92,7 @@ public class GameController {
      * @param e
      */
     private void setOnKeyPressed(KeyEvent e){
+        e.consume();
         KeyCode keyCode = e.getCode();
         switch ( keyCode ) {
             case UP:
@@ -99,9 +106,6 @@ public class GameController {
                 break;
             case RIGHT:
                 gameModel.rotateRight(false);
-                break;
-            case P:
-                gameModel.gamePaused = gameView.toggleMenu("Pause", GameModel.PAUSE_MSG);
                 break;
             case R:
                 reset();
@@ -128,6 +132,9 @@ public class GameController {
             case RIGHT:
                 gameModel.rotateRight(true);
                 break;
+            case P:
+                gameModel.gamePaused = gameView.toggleMenu("Pause", GameModel.PAUSE_MSG);
+                break;
         }
     }
 
@@ -137,6 +144,8 @@ public class GameController {
     private void reset() {
         gameModel.reset();
         gameView.reset();
+        this.scene.removeEventHandler(KeyEvent.KEY_PRESSED, keydownHandler);
+        this.scene.removeEventHandler(KeyEvent.KEY_RELEASED, keyupHandler);
         gameView.drawObstacles(gameModel.getObstacles());
         gameModel.gamePaused = gameView.toggleMenu("Rennspiel", GameModel.WELCOME_MSG);
     }

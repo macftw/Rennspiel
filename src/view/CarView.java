@@ -20,11 +20,11 @@ public class CarView extends Region {
     private Translate translate;
     private List<Image> explosionImages;
     private Transition explosionAnimation;
-    private ImageView explosionView;
+    private ImageView imgView, explosionView;
 
     public CarView(double startX, double startY) {
         super();
-        ImageView imgView = new ImageView();
+        imgView = new ImageView();
         Image carImg = new Image(imgUrl);
         imgView.setImage(carImg);
         imageWidth = carImg.getWidth();
@@ -93,6 +93,11 @@ public class CarView extends Region {
     }
 
     public void explode() {
+        getChildren().remove(imgView);
+        getChildren().add(explosionView);
+        explosionView.setX(-50);
+        explosionView.setY(-50);
+
         explosionAnimation.play();
     }
 }
