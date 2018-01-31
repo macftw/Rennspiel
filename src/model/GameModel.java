@@ -9,7 +9,9 @@ import javafx.geometry.Point2D;
  */
 public class GameModel {
     final int NUM_OBSTACLES = 100;
-    public static String WELCOME_MSG = "Use the arrow keys to drive the car.\nPress P to pause and R to restart the game.";
+    public static String WELCOME_MSG = "Welcome to the game!\nDrive the car into the Finish Line without touching the obstacles!\nDon't forget to pass the Checkpoint!\n\nUse the arrow keys to drive the car.\nPress P to pause and R to restart the game.";
+    public static String PAUSE_MSG = "Drive the car into the Finish Line without touching the obstacles!\nDon't forget to pass the Checkpoint!\n\nUse the arrow keys to drive the car.\nPress P to resume and R to restart the game.";
+
     /**
      * The car that is driven on the racetrack
      */

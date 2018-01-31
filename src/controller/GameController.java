@@ -30,7 +30,7 @@ public class GameController {
         gameView.drawObstacles(gameModel.getObstacles());
 
         gameView.addEventHandler(RaceEvent.START,event -> {
-            gameModel.gamePaused = gameView.toggleMenu("Pause", "Press P to resume");
+            gameModel.gamePaused = gameView.toggleMenu("Pause", GameModel.PAUSE_MSG);
             setUpInputHandler();
         });
         gameView.addEventHandler(RaceEvent.CRASH,event -> {
@@ -43,7 +43,7 @@ public class GameController {
             gameModel.startingLinePassed = true;
         });
         gameView.addEventHandler(RaceEvent.FINISH,event -> {
-            gameModel.gamePaused = gameView.toggleMenu("Congrats!\nYou won!", "Press R to play again.");
+            gameModel.gamePaused = gameView.toggleMenu("Congrats!\nYou won!", "Your time: " + event.time + "s\nPress R to play again.");
         });
         gameView.addEventHandler(RaceEvent.OBSTACLE,event -> {
             gameModel.hitObstacle();
@@ -101,7 +101,7 @@ public class GameController {
                 gameModel.rotateRight(false);
                 break;
             case P:
-                gameModel.gamePaused = gameView.toggleMenu("Pause", "Press P to resume");
+                gameModel.gamePaused = gameView.toggleMenu("Pause", GameModel.PAUSE_MSG);
                 break;
             case R:
                 reset();
