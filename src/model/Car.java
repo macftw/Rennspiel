@@ -39,9 +39,8 @@ public class Car {
 
     public AccelerationStatus accelerationStatus;
     public RotationStatus rotationStatus;
-//TODO
     /**
-     *
+     * Represents a race car
      */
     public Car() {
         isOnTrack = true;
@@ -51,11 +50,11 @@ public class Car {
         accelerationStatus = AccelerationStatus.NONE;
         rotationStatus = RotationStatus.NONE;
     }
-    //TODO
     /**
+     * Is called on eace frame to calculate the cars speed and rotation angle based
+     * on the current acceleration and rotation.
      *
-     *
-     * @param position
+     * @param position the current position of the car on the screen
      */
     public void updateValues(Point2D position) {
         this.position = position;

@@ -116,11 +116,13 @@ public class GameView implements EventTarget {
 //        areas[3].setStroke(Color.ORANGE);
     }
 
-    /**TODO
+    /**
+     * Hides or shows menu whether or not it is hidden or shown in the current moment.
      *
-     * @param title
-     * @param message
-     * @return
+     * @param title heading of the menu
+     * @param message text of the menu
+     * @return true: the menu is shown
+     *         false: otherwise
      */
     public boolean toggleMenu(String title, String message) {
         if (menu != null) {
@@ -202,28 +204,21 @@ public class GameView implements EventTarget {
         checkpoint.setFill(Color.TRANSPARENT);
         gamePane.getChildren().add(checkpoint);
     }
-//TODO
-    /**
-     *
-     * @param degrees
-     */
     public void setCarRotation(double degrees) {
         this.carView.setRotation(degrees);
     }
 
-    /**TODO
-     *
-     * @param delta
-     * @return
-     */
     public Point2D setCarPosition(double delta) {
         Point2D p =  this.carView.setPosition(delta);
         return p;
     }
 
-    /**TODO
+    /**
+     * Checks if one the cars' corner points intersects with an obstacle in the current area
+     * and fires one of two Events based on the car Speed:
+     * CRASH || OBSTACLE
      *
-     * @param carSpeed
+     * @param carSpeed the current speed of the car
      */
     public void checkForCollision(double carSpeed) {
         boolean[] activeArea = new boolean[areas.length];
@@ -282,18 +277,17 @@ public class GameView implements EventTarget {
 
         }
     }
-//TODO
     /**
-     * Sets up FPS.
+     * Draws the current FPS count on the screen
      *
-     * @param fps
+     * @param fps curren frames per second
      */
     public void updateFpsLabel(int fps) {
         fpsLabel.setText(fps + " FPS");
     }
 
     /**
-     * Sets up a Timer that is being counted up.
+     * Draws the current Timer on the screen.
      *
      * @param delta double with the timeDifference in seconds
      */
@@ -325,43 +319,40 @@ public class GameView implements EventTarget {
             return "" + x;
         return "0" + x;
     }
-//TODO
+
     /**
+     * Listens for Events fired by the GameView.
      *
-     * @param eventType
-     * @param eventHandler
-     * @param <T>
+     * @param eventType to listen to
+     * @param eventHandler to handle the Event
+     * @param <T> type of the EventHandler
      */
     public final <T extends Event> void addEventHandler(EventType<T> eventType, EventHandler<? super T> eventHandler) {
         handlers.computeIfAbsent(eventType, (k) -> new ArrayList<>()).add(eventHandler);
     }
 
-//TODO
-    /**
-     *
-     * @param tail
-     * @return
-     */
     @Override
     public final EventDispatchChain buildEventDispatchChain(EventDispatchChain tail) {
         return tail.prepend(this::dispatchEvent);
     }
-//TODO
+
     /**
+     * Passes the events to all attached handlers.
      *
-     * @param event
-     * @param handlers
+     * @param event the occured event
+     * @param handlers the attached handlers
      */
     private void handleEvent(Event event, Collection<EventHandler> handlers) {
         if (handlers != null) {
             handlers.forEach(handler -> handler.handle(event));
         }
     }
-//TODO
+
     /**
+     * Dispatches a new event.
      *
-     * @param event
-     * @param tail
+     * @param event the current event
+     * @param tail event dispatch chain
      * @return
      */
     private Event dispatchEvent(Event event, EventDispatchChain tail) {
@@ -374,17 +365,18 @@ public class GameView implements EventTarget {
         handleEvent(event, handlers.get(Event.ANY));
         return event;
     }
-//TODO
+
     /**
+     * Fires a new event.
      *
-     * @param event
+     * @param event the event to fire
      */
     public void fireEvent(Event event) {
         Event.fireEvent(this, event);
     }
-//TODO
+
     /**
-     *
+     * Clears the view hierarchy and sets it up again.
      */
     public void reset() {
         menu = null;

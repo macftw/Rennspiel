@@ -12,7 +12,9 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO
+/**
+ * Representation of the RaceCar
+ */
 public class CarView extends Region {
 
     private final String imgUrl = "resources/car.png";
@@ -22,12 +24,12 @@ public class CarView extends Region {
     private List<Image> explosionImages;
     private Transition explosionAnimation;
     private ImageView imgView, explosionView;
-//TODO
+
     /**
+     * Instantiates a new carView at the specified position
      *
-     *
-     * @param startX
-     * @param startY
+     * @param startX x coordinate of the position
+     * @param startY y coordinate of the position
      */
     public CarView(double startX, double startY) {
         super();
@@ -68,10 +70,10 @@ public class CarView extends Region {
             }
         };
     }
-//TODO
     /**
+     * Rotates the carView by the specified angle
      *
-     * @param degrees
+     * @param degrees angle
      */
     public void setRotation(double degrees) {
 //        rotation.setPivotX(getPosition().getX());
@@ -79,10 +81,11 @@ public class CarView extends Region {
         rotation.setAngle(degrees);
     }
 
-    /**TODO
+    /**
+     * Translates the carView into its current direction
      *
-     * @param delta
-     * @return
+     * @param delta the magnitude of the translation vector
+     * @return the new position
      */
     public Point2D setPosition(double delta) {
         double x = -Math.cos(rotation.getAngle() * Math.PI / 180) * delta;
@@ -92,9 +95,10 @@ public class CarView extends Region {
         return new Point2D((float)translate.getX(), (float)translate.getY());
     }
 
-    /**TODO
+    /**
+     * Gets the corner points of the car for CollisionDetection
      *
-     * @return
+     * @return corner points of the car for CollisionDetection
      */
     public Point2D getTopLeft() {
         return localToScene(Point2D.ZERO);

@@ -45,11 +45,11 @@ public class GameModel {
         car = new Car();
         return car;
     }
-//TODO
     /**
+     * Notifies the car to update its speed, rotation and position.
+     * Calculates if the car is still on the RaceTrack.
      *
-     *
-     * @param newPos
+     * @param newPos current position of the car on the screen
      */
     public void updateCar(Point2D newPos) {
         car.updateValues(newPos);
@@ -102,9 +102,8 @@ public class GameModel {
     public double getCarSpeed(){
         return car.getSpeed();
     }
-//TODO
     /**
-     *
+     * Sets up the area in which the obstacles are being placed
      */
     private void generateObstacles() {
         obstacles = new Obstacle[4][NUM_OBSTACLES];
@@ -115,11 +114,6 @@ public class GameModel {
             }
         }
     }
-//TODO
-    /**
-     *
-     * @return
-     */
     public Obstacle[][] getObstacles() {
         return obstacles;
     }

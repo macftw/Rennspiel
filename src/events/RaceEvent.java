@@ -16,20 +16,19 @@ public class RaceEvent extends Event {
     public static final EventType<RaceEvent> OBSTACLE = new EventType(ANY, "OBSTACLE");
 
     public String time;
-//TODO
     /**
+     * Sets up a new RaceEvent that can occur during a RaceGame
      *
-     *
-     * @param type
+     * @param type specified EventType
      */
     public RaceEvent(EventType<RaceEvent> type) {
         super(type);
     }
-//TODO
     /**
+     * Sets up a new RaceEvent that can occur during a RaceGame
      *
-     * @param type
-     * @param time
+     * @param type specified EventType
+     * @param time additional String Parameter that can be sent with the Event
      */
     public RaceEvent(EventType<RaceEvent> type, String time) {
         super(type);
