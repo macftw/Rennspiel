@@ -45,32 +45,56 @@ public class GameModel {
         car = new Car();
         return car;
     }
-
+    /**
+     * Notifies the car to update its speed, rotation and position.
+     * Calculates if the car is still on the RaceTrack.
+     *
+     * @param newPos current position of the car on the screen
+     */
     public void updateCar(Point2D newPos) {
         car.updateValues(newPos);
         car.isOnTrack = raceTrackOuter.contains((float)car.getPosition().getX(), (float)car.getPosition().getY())
                 && !raceTrackInner.contains((float)car.getPosition().getX(), (float)car.getPosition().getY());
-//        car.isOnTrack = raceTrackOuter.contains(car.getPosition()) && !raceTrackInner.contains(car.getPosition());
     }
 
+    /**
+     * Sets RotationStatus to NONE if the Key is being released. Otherwise it keeps rotating.
+     *
+     * @param release boolean that is set to true every time a KeyEvent stops
+     */
     public void rotateLeft(boolean release){
         car.rotationStatus = release ? Car.RotationStatus.NONE : Car.RotationStatus.LEFT;
     }
+
     public void rotateRight(boolean release){
         car.rotationStatus = release ? Car.RotationStatus.NONE : Car.RotationStatus.RIGHT;
     }
+
     public double getCarRotation(){
         return car.getRotation();
     }
 
+    /**
+     * Sets accelarationStatus to NONE if the Key is being released. Otherwise it keeps accelerating.
+     *
+     * @param release boolean that is set to true every time a KeyEvent stops
+     */
     public void accelerate(boolean release){
         car.accelerationStatus = release ? Car.AccelerationStatus.NONE : Car.AccelerationStatus.ACCELERATING;
     }
 
+    /**
+     *Sets AccelarationStatus to NONE if the Key is being  released. Otherwis it keeps braking.
+     *
+     * @param release boolean tha is set to true every time a KeyEvent stops
+     */
     public void brake(boolean release){
         car.accelerationStatus = release ? Car.AccelerationStatus.NONE : Car.AccelerationStatus.BRAKING;
     }
 
+    /**
+     * Sets Car to 0 everytime a Obstacle is being hit.
+     */
     public void hitObstacle() {
         car.hitObstacle();
     }
@@ -78,10 +102,8 @@ public class GameModel {
     public double getCarSpeed(){
         return car.getSpeed();
     }
-
-
     /**
-     *
+     * Sets up the area in which the obstacles are being placed
      */
     private void generateObstacles() {
         obstacles = new Obstacle[4][NUM_OBSTACLES];
@@ -92,11 +114,13 @@ public class GameModel {
             }
         }
     }
-
     public Obstacle[][] getObstacles() {
         return obstacles;
     }
 
+    /**
+     * Sets up a new Car, RaceTrack, Obstacles and sets the Checkpoint and Starting Line to the beginning state.
+     */
     public void reset() {
         car = initializeCar();
         raceTrackInner = new Ellipse2D(200, 150, 900, 500);

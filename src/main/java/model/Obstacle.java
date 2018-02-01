@@ -3,6 +3,9 @@ package model;
 import javafx.stage.Screen;
 import view.GameView;
 
+/**
+ * Represents the position and size of the Obstacle on the screen
+ */
 public class Obstacle {
 
     private static final double MIN_SIZE = 10;
@@ -13,6 +16,13 @@ public class Obstacle {
     private final double x_padding = 50;
     private final double y_padding = 50;
 
+    /**
+     * Sets up the random size and position of the Obstacles
+     *
+     * @param area area of the screen in which the obstacle is being placed
+     *             0 || 1
+     *             2 || 3
+     */
     Obstacle(int area) {
         this.width = MIN_SIZE + MAX_SIZE * Math.random();
         this.height = MIN_SIZE + MAX_SIZE * Math.random();

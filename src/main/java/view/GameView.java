@@ -116,6 +116,14 @@ public class GameView implements EventTarget {
 //        areas[3].setStroke(Color.ORANGE);
     }
 
+    /**
+     * Hides or shows menu whether or not it is hidden or shown in the current moment.
+     *
+     * @param title heading of the menu
+     * @param message text of the menu
+     * @return true: the menu is shown
+     *         false: otherwise
+     */
     public boolean toggleMenu(String title, String message) {
         if (menu != null) {
             System.out.println("Hide menu");
@@ -139,6 +147,11 @@ public class GameView implements EventTarget {
         }
     }
 
+    /**
+     * Places the Obstacles into four areas, fills them with a Color and creates Bounding Boxes.
+     * Sets up SafeAreas where the bounding boxes and colors are being removed from the Obstacles.
+     * @param obstacles
+     */
     public void drawObstacles(Obstacle[][] obstacles) {
         Rectangle upperSafeArea = new Rectangle(620, 50, 90, 100);
         Rectangle lowerSafeArea = new Rectangle(620, 650, 60, 100);
@@ -174,18 +187,23 @@ public class GameView implements EventTarget {
         }
     }
 
-    private void drawStartingLine(){
+    /**
+     * Places a StartingLine onto the RaceTrack.
+     */
+    public void drawStartingLine(){
         startingLine = new Rectangle(655, 50, 1, 100);
         startingLine.setFill(Color.TRANSPARENT);
         gamePane.getChildren().add(startingLine);
     }
 
-    private void drawCheckpoint() {
+    /**
+     * Places a Checkpoint onto the RaceTrack.
+     */
+    public void drawCheckpoint() {
         checkpoint = new Rectangle(655, 650, 1, 100);
         checkpoint.setFill(Color.TRANSPARENT);
         gamePane.getChildren().add(checkpoint);
     }
-
     public void setCarRotation(double degrees) {
         this.carView.setRotation(degrees);
     }
@@ -195,6 +213,13 @@ public class GameView implements EventTarget {
         return p;
     }
 
+    /**
+     * Checks if one the cars' corner points intersects with an obstacle in the current area
+     * and fires one of two Events based on the car Speed:
+     * CRASH || OBSTACLE
+     *
+     * @param carSpeed the current speed of the car
+     */
     public void checkForCollision(double carSpeed) {
         boolean[] activeArea = new boolean[areas.length];
 //        for(int k = 0; k < 4; k++) {
@@ -231,6 +256,11 @@ public class GameView implements EventTarget {
         }
     }
 
+    /**
+     * Sets Bounds to the startingLine and Checkpoint and checks for intersections with the Car
+     *
+     * @param checkpointPassed boolean set to true when Car intersects with the Checkpoint
+     */
     public void checkLines(boolean checkpointPassed) {
         Bounds checkpointBounds = checkpoint.getBoundsInParent();
         if (checkpointBounds.intersects(carView.getBoundsInParent())) {
@@ -247,44 +277,84 @@ public class GameView implements EventTarget {
 
         }
     }
-
+    /**
+     * Draws the current FPS count on the screen
+     *
+     * @param fps curren frames per second
+     */
     public void updateFpsLabel(int fps) {
         fpsLabel.setText(fps + " FPS");
     }
 
+    /**
+     * Draws the current Timer on the screen.
+     *
+     * @param delta double with the timeDifference in seconds
+     */
     public void updateTimeLabel(double delta) {
         time += delta;
         timeLabel.setText(timeToFormattedString(time));
     }
 
+    /**
+     * Converts the double into the asked String.
+     *
+     * @param seconds double that has to be converted
+     * @return String in the layout of "xx:xx"
+     */
     private String timeToFormattedString(double seconds) {
         int secs = (int) seconds;
         int mins = (int) (seconds/60);
         return toDoubleDigits(mins) + ":" + toDoubleDigits(secs);
     }
 
+    /**
+     * Converts the given int into a number with two digits.
+     *
+     * @param x number to convert into a double digit
+     * @return String with two digits
+     */
     private String toDoubleDigits(int x) {
         if (x > 9)
             return "" + x;
         return "0" + x;
     }
 
+    /**
+     * Listens for Events fired by the GameView.
+     *
+     * @param eventType to listen to
+     * @param eventHandler to handle the Event
+     * @param <T> type of the EventHandler
+     */
     public final <T extends Event> void addEventHandler(EventType<T> eventType, EventHandler<? super T> eventHandler) {
         handlers.computeIfAbsent(eventType, (k) -> new ArrayList<>()).add(eventHandler);
     }
-
 
     @Override
     public final EventDispatchChain buildEventDispatchChain(EventDispatchChain tail) {
         return tail.prepend(this::dispatchEvent);
     }
 
+    /**
+     * Passes the events to all attached handlers.
+     *
+     * @param event the occured event
+     * @param handlers the attached handlers
+     */
     private void handleEvent(Event event, Collection<EventHandler> handlers) {
         if (handlers != null) {
             handlers.forEach(handler -> handler.handle(event));
         }
     }
 
+    /**
+     * Dispatches a new event.
+     *
+     * @param event the current event
+     * @param tail event dispatch chain
+     * @return
+     */
     private Event dispatchEvent(Event event, EventDispatchChain tail) {
         // go through type hierarchy and trigger all handlers
         EventType type = event.getEventType();
@@ -296,10 +366,18 @@ public class GameView implements EventTarget {
         return event;
     }
 
-    private void fireEvent(Event event) {
+    /**
+     * Fires a new event.
+     *
+     * @param event the event to fire
+     */
+    public void fireEvent(Event event) {
         Event.fireEvent(this, event);
     }
 
+    /**
+     * Clears the view hierarchy and sets it up again.
+     */
     public void reset() {
         menu = null;
         gamePane.getChildren().clear();
