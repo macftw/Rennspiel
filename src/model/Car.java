@@ -12,7 +12,6 @@ public class Car {
     final double frontalArea = 2.19;
     final double airDragCoefficient = 0.28;
     final double  aerodynamicDrag = 1.204;
-    final double minSpeed = 0;
     final double maxSpeed = 200;
     final double maxAcceleration = 5;
 
@@ -29,7 +28,6 @@ public class Car {
 
 
     public boolean isOnTrack;
-    public boolean writeOff;
 
     public enum AccelerationStatus {
         ACCELERATING, NONE, BRAKING
@@ -53,8 +51,9 @@ public class Car {
         accelerationStatus = AccelerationStatus.NONE;
         rotationStatus = RotationStatus.NONE;
     }
-
+    //TODO
     /**
+     *
      *
      * @param position
      */
@@ -87,7 +86,8 @@ public class Car {
     }
 
     /**
-     *
+     * Sets up a Physics Class to calculate the Air Resistance and the Rolling Resistanse on the track.
+     * and off the track with the speed
      */
     private void physics() {
         double cR = isOnTrack ? c1 : c2;
@@ -102,21 +102,21 @@ public class Car {
     }
 
     /**
-     *
+     * Calculates the Rotation with a negative Rotation Radius for a left Turn of the Car
      */
     private void rotateLeft(){
         rotation -= rotationRadius;
     }
 
     /**
-     *
+     * Calculates the Rotation with a negative Rotation Radius for a right Turn of the Car
      */
     private void rotateRight(){
         rotation += rotationRadius;
     }
 
     /**
-     *
+     * Calculates the Speed with the Accelaration. It can not get lower 0 and above maxSpeed.
      */
     private void updateSpeed(){
         speed += acceleration;
@@ -138,6 +138,9 @@ public class Car {
         return position;
     }
 
+    /**
+     * Sets speed to 0 every time a obstacle is being hit
+     */
     public void hitObstacle() {
         speed = 0;
     }

@@ -19,6 +19,7 @@ public class RaceEvent extends Event {
 
     /**
      *
+     *
      * @param type
      */
     public RaceEvent(EventType<RaceEvent> type) {

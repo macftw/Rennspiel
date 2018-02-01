@@ -2,7 +2,7 @@ package model;
 
 import javafx.stage.Screen;
 import view.GameView;
-
+//TODO
 public class Obstacle {
 
     private static final double MIN_SIZE = 10;
@@ -13,6 +13,10 @@ public class Obstacle {
     private final double x_padding = 50;
     private final double y_padding = 50;
 
+    /**
+     * Sets Sets up the random size of the Obstacles
+     * @param area
+     */
     Obstacle(int area) {
         this.width = MIN_SIZE + MAX_SIZE * Math.random();
         this.height = MIN_SIZE + MAX_SIZE * Math.random();

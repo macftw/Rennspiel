@@ -12,6 +12,7 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO
 public class CarView extends Region {
 
     private final String imgUrl = "resources/car.png";
@@ -21,7 +22,13 @@ public class CarView extends Region {
     private List<Image> explosionImages;
     private Transition explosionAnimation;
     private ImageView imgView, explosionView;
-
+//TODO
+    /**
+     *
+     *
+     * @param startX
+     * @param startY
+     */
     public CarView(double startX, double startY) {
         super();
         imgView = new ImageView();
@@ -61,7 +68,7 @@ public class CarView extends Region {
             }
         };
     }
-
+//TODO
     /**
      *
      * @param degrees

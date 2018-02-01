@@ -19,7 +19,7 @@ public class GameController {
     private EventHandler<KeyEvent> keyupHandler, keydownHandler;
 
     /**
-     *
+     * Sets up the GameController
      * @param gameModel
      * @param gameView
      */
@@ -53,7 +53,7 @@ public class GameController {
     }
 
     /**
-     *
+     * Sets up the GameView Handler to add the RaceEvents and events to the GameView
      */
     private void setUpGameViewHandlers() {
         gameView.addEventHandler(RaceEvent.START,event -> {
@@ -76,7 +76,7 @@ public class GameController {
     }
 
     /**
-     *
+     * Sets up the Input Handler to handle setOnKeyPressed and setOnKeyReleased
      */
     private void setUpInputHandler() {
         /*
@@ -91,8 +91,9 @@ public class GameController {
     }
 
     /**
+     * Sets the KeyPressed Event for different KeyEvents
      *
-     * @param e
+     * @param e KeyEvent which is being received
      */
     private void setOnKeyPressed(KeyEvent e){
         e.consume();
@@ -117,8 +118,9 @@ public class GameController {
     }
 
     /**
+     * Sets the KeyReleased Event for different KeyEvents
      *
-     * @param e
+     * @param e KeyEvent which is being received
      */
     private void setOnKeyReleased(KeyEvent e){
         KeyCode keyCode = e.getCode();
@@ -142,7 +144,8 @@ public class GameController {
     }
 
     /**
-     *
+     * Resets the GameModel, GameView and removes the KeyEvents.
+     * Afterwards the GameModel an the GameView are being set up again.
      */
     private void reset() {
         gameModel.reset();

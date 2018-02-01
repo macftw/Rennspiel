@@ -146,7 +146,8 @@ public class GameView implements EventTarget {
     }
 
     /**
-     *
+     * Places the Obstacles into four areas, fills them with a Color and creates Bounding Boxes.
+     * Sets up SafeAreas where the bounding boxes and colors are being removed from the Obstacles.
      * @param obstacles
      */
     public void drawObstacles(Obstacle[][] obstacles) {
@@ -185,7 +186,7 @@ public class GameView implements EventTarget {
     }
 
     /**
-     *
+     * Places a StartingLine onto the RaceTrack.
      */
     public void drawStartingLine(){
         startingLine = new Rectangle(655, 50, 1, 100);
@@ -194,7 +195,7 @@ public class GameView implements EventTarget {
     }
 
     /**
-     *
+     * Places a Checkpoint onto the RaceTrack.
      */
     public void drawCheckpoint() {
         checkpoint = new Rectangle(655, 650, 1, 100);
