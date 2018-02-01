@@ -79,7 +79,7 @@ public class CarView extends Region {
         rotation.setAngle(degrees);
     }
 
-    /**
+    /**TODO
      *
      * @param delta
      * @return
@@ -92,7 +92,7 @@ public class CarView extends Region {
         return new Point2D((float)translate.getX(), (float)translate.getY());
     }
 
-    /**
+    /**TODO
      *
      * @return
      */
@@ -113,7 +113,7 @@ public class CarView extends Region {
     }
 
     /**
-     *
+     * Removes the image of the car and sets up an animation with an explosion
      */
     public void explode() {
         getChildren().remove(imgView);

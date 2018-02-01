@@ -16,7 +16,7 @@ public class RaceEvent extends Event {
     public static final EventType<RaceEvent> OBSTACLE = new EventType(ANY, "OBSTACLE");
 
     public String time;
-
+//TODO
     /**
      *
      *
@@ -25,7 +25,7 @@ public class RaceEvent extends Event {
     public RaceEvent(EventType<RaceEvent> type) {
         super(type);
     }
-
+//TODO
     /**
      *
      * @param type

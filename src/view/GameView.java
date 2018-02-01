@@ -116,7 +116,7 @@ public class GameView implements EventTarget {
 //        areas[3].setStroke(Color.ORANGE);
     }
 
-    /**
+    /**TODO
      *
      * @param title
      * @param message
@@ -211,7 +211,7 @@ public class GameView implements EventTarget {
         this.carView.setRotation(degrees);
     }
 
-    /**
+    /**TODO
      *
      * @param delta
      * @return
@@ -221,7 +221,7 @@ public class GameView implements EventTarget {
         return p;
     }
 
-    /**
+    /**TODO
      *
      * @param carSpeed
      */

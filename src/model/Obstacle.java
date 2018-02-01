@@ -13,8 +13,8 @@ public class Obstacle {
     private final double x_padding = 50;
     private final double y_padding = 50;
 
-    /**
-     * Sets Sets up the random size of the Obstacles
+    /** TODO
+     * Sets up the random size of the Obstacles
      * @param area
      */
     Obstacle(int area) {
