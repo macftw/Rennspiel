@@ -12,11 +12,12 @@ import javafx.scene.text.TextAlignment;
 public class MenuView extends BorderPane {
 
     /**
+     * Sets up a menu that shows a title, a message and a button.
      *
-     * @param width
-     * @param height
-     * @param title
-     * @param message
+     * @param width double to set the width of the menu
+     * @param height double to set the height of the menu
+     * @param title String with the title to be shown
+     * @param message String with the message to be shown
      */
     public MenuView(double width, double height, String title, String message) {
         super();

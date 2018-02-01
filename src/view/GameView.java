@@ -202,7 +202,7 @@ public class GameView implements EventTarget {
         checkpoint.setFill(Color.TRANSPARENT);
         gamePane.getChildren().add(checkpoint);
     }
-
+//TODO
     /**
      *
      * @param degrees
@@ -262,8 +262,9 @@ public class GameView implements EventTarget {
     }
 
     /**
+     * Sets Bounds to the startingLine and Checkpoint and checks for intersections with the Car
      *
-     * @param checkpointPassed
+     * @param checkpointPassed boolean set to true when Car intersects with the Checkpoint
      */
     public void checkLines(boolean checkpointPassed) {
         Bounds checkpointBounds = checkpoint.getBoundsInParent();
@@ -281,8 +282,9 @@ public class GameView implements EventTarget {
 
         }
     }
-
+//TODO
     /**
+     * Sets up FPS.
      *
      * @param fps
      */
@@ -291,8 +293,9 @@ public class GameView implements EventTarget {
     }
 
     /**
+     * Sets up a Timer that is being counted up.
      *
-     * @param delta
+     * @param delta double with the timeDifference in seconds
      */
     public void updateTimeLabel(double delta) {
         time += delta;
@@ -300,9 +303,10 @@ public class GameView implements EventTarget {
     }
 
     /**
+     * Converts the double into the asked String.
      *
-     * @param seconds
-     * @return
+     * @param seconds double that has to be converted
+     * @return String in the layout of "xx:xx"
      */
     private String timeToFormattedString(double seconds) {
         int secs = (int) seconds;
@@ -311,16 +315,17 @@ public class GameView implements EventTarget {
     }
 
     /**
+     * Converts the given int into a number with two digits.
      *
-     * @param x
-     * @return
+     * @param x number to convert into a double digit
+     * @return String with two digits
      */
     private String toDoubleDigits(int x) {
         if (x > 9)
             return "" + x;
         return "0" + x;
     }
-
+//TODO
     /**
      *
      * @param eventType
@@ -331,7 +336,7 @@ public class GameView implements EventTarget {
         handlers.computeIfAbsent(eventType, (k) -> new ArrayList<>()).add(eventHandler);
     }
 
-
+//TODO
     /**
      *
      * @param tail
@@ -341,7 +346,7 @@ public class GameView implements EventTarget {
     public final EventDispatchChain buildEventDispatchChain(EventDispatchChain tail) {
         return tail.prepend(this::dispatchEvent);
     }
-
+//TODO
     /**
      *
      * @param event
@@ -352,7 +357,7 @@ public class GameView implements EventTarget {
             handlers.forEach(handler -> handler.handle(event));
         }
     }
-
+//TODO
     /**
      *
      * @param event
@@ -369,7 +374,7 @@ public class GameView implements EventTarget {
         handleEvent(event, handlers.get(Event.ANY));
         return event;
     }
-
+//TODO
     /**
      *
      * @param event
@@ -377,7 +382,7 @@ public class GameView implements EventTarget {
     public void fireEvent(Event event) {
         Event.fireEvent(this, event);
     }
-
+//TODO
     /**
      *
      */
